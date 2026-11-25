@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Calculadora Maestrazo</title>
+    <link rel="stylesheet" href="styles.css?v=3">
+    <meta name="theme-color" content="#007bff">
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <!-- Encabezado -->
+        <header class="app-header">
+            <div class="logo-area">
+                <h1>Sodimac Maestro</h1>
+                <p>Incentivos de Venta</p>
+            </div>
+            <button id="btn-asistente" class="icon-btn" title="Ayuda / Asistente">?</button>
+        </header>
+
+        <!-- Contenido Principal -->
+        <main class="content-area" id="main-content">
+            
+            <!-- Vista 1: Calculadora -->
+            <section id="view-calculadora" class="view active">
+                <div id="resultado-vacio" class="empty-state">
+                    <h2>Calculadora</h2>
+                    <p>Toca el botón <strong>+</strong> para ingresar los datos del mes.</p>
+                </div>
+
+                <div id="resultado-calculado" class="results-card hidden">
+                    <h2>Resultado del Mes</h2>
+                    <div class="total-highlight">
+                        <span>Total a Recibir:</span>
+                        <h3 id="res-total">S/ 0.00</h3>
+                    </div>
+                    <div class="breakdown">
+                        <div class="breakdown-item">
+                            <span>Incentivo Tienda:</span>
+                            <strong id="res-tienda">S/ 0.00</strong>
+                        </div>
+                        <div class="breakdown-item sub-item">
+                            <span>Plan / NPS / NSR:</span>
+                            <span id="res-tienda-detalle">0 / 0 / 0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span>Incentivo Maestrazo:</span>
+                            <strong id="res-maestrazo">S/ 0.00</strong>
+                        </div>
+                        <div class="breakdown-item sub-item">
+                            <span>Cumplimiento Ponderado:</span>
+                            <span id="res-ponderado">0%</span>
+                        </div>
+                        <div class="breakdown-item sub-item">
+                            <span>Premio Base:</span>
+                            <span id="res-premio-base">S/ 0.00</span>
+                        </div>
+                        <div class="breakdown-item sub-item">
+                            <span>Multiplicador:</span>
+                            <span id="res-multiplicador">1.0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Vista 2: Historial -->
+            <section id="view-historial" class="view">
+                <h2 class="view-title">Historial de Cálculos</h2>
+                <div id="historial-vacio" class="empty-state">
+                    <p>Aún no hay registros guardados.</p>
+                </div>
+                <div id="historial-lista" class="history-list"></div>
+            </section>
+
+            <!-- Vista 3: KPIs -->
+            <section id="view-kpis" class="view">
+                <div class="empty-state">
+                    <h2>KPIs y Proyecciones</h2>
+                    <p>Los gráficos aparecerán cuando tengas datos.</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Botón Flotante (FAB) -->
+        <button class="fab" id="btn-nuevo-calculo" aria-label="Nuevo Cálculo">+</button>
+
+        <!-- Barra de Navegación Inferior -->
+        <nav class="tab-bar" id="tab-bar-nav">
+            <button class="tab-btn active" data-target="view-calculadora">
+                <span class="icon">🧮</span>
+                <span class="label">Calculadora</span>
+            </button>
+            <button class="tab-btn" data-target="view-historial">
+                <span class="icon">📋</span>
+                <span class="label">Historial</span>
+            </button>
+            <button class="tab-btn" data-target="view-kpis">
+                <span class="icon">📈</span>
+                <span class="label">KPIs</span>
+            </button>
+        </nav>
+
+        <!-- Fondo oscuro (Backdrop) -->
+        <div class="backdrop" id="backdrop"></div>
+
+        <!-- Bottom Sheet 1: Formulario -->
+        <div class="bottom-sheet" id="bottom-sheet-form">
+            <div class="sheet-header">
+                <h2>Ingresar Datos del Mes</h2>
+                <button class="close-btn" id="btn-cerrar-form">&times;</button>
+            </div>
+            <div class="sheet-body">
+                <form id="form-calculo">
+                    <div class="form-group">
+                        <label for="mes">Mes y Año de Producción:</label>
+                        <input type="month" id="mes" required>
+                    </div>
+                    <h3 class="form-section-title" id="tut-tienda">Indicadores de Tienda</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="plan-tienda">% Plan Venta Tienda:</label>
+                            <input type="number" id="plan-tienda" step="0.01" placeholder="Ej: 105" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nps">% NPS:</label>
+                            <input type="number" id="nps" step="0.01" placeholder="Ej: 101" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nsr">% NSR (Non Store Retail):</label>
+                        <input type="number" id="nsr" step="0.01" placeholder="Ej: 101" required>
+                    </div>
+                    <h3 class="form-section-title" id="tut-maestrazo">Indicadores Maestrazo</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="venta-individual">% Venta Individual:</label>
+                            <input type="number" id="venta-individual" step="0.01" placeholder="Ej: 117" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="venta-grupal">% Venta Grupal:</label>
+                            <input type="number" id="venta-grupal" step="0.01" placeholder="Ej: 115" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bo-retail">% B-O Retail:</label>
+                            <input type="number" id="bo-retail" step="0.01" placeholder="Ej: 114" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ve">% VE (Venta Empresa):</label>
+                            <input type="number" id="ve" step="0.01" placeholder="Ej: 30" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="frecuencia-bo">% Frecuencia Black & Oro:</label>
+                        <input type="number" id="frecuencia-bo" step="0.01" placeholder="Ej: 104" required>
+                    </div>
+                    <h3 class="form-section-title" id="tut-criterios">Criterios de Pago</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tipo-jornada">Jornada:</label>
+                            <select id="tipo-jornada" required>
+                                <option value="normal">Full/Part Time</option>
+                                <option value="peak">Peak Time</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ausencias">Días de Ausencia:</label>
+                            <input type="number" id="ausencias" min="0" placeholder="0" required>
+                        </div>
+                    </div>
+                    <small class="help-text">Límite de ausencias: 3 días (Normal) o 2 días (Peak).</small>
+                    <button type="submit" class="btn-submit" id="btn-submit-form">Calcular y Guardar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Bottom Sheet 2: Detalle del Historial -->
+        <div class="bottom-sheet" id="bottom-sheet-detalle">
+            <div class="sheet-header">
+                <h2 id="detalle-titulo">Detalle del Mes</h2>
+                <button class="close-btn" id="btn-cerrar-detalle">&times;</button>
+            </div>
+            <div class="sheet-body">
+                <div id="detalle-contenido"></div>
+                <button id="btn-editar-registro" class="btn-submit btn-edit">Editar Datos</button>
+            </div>
+        </div>
+
+        <!-- Bottom Sheet 3: ASISTENTE / AYUDA -->
+        <div class="bottom-sheet" id="bottom-sheet-asistente">
+            <div class="sheet-header">
+                <h2>Asistente Maestrazo</h2>
+                <button class="close-btn" id="btn-cerrar-asistente">&times;</button>
+            </div>
+            <div class="sheet-body">
+                <h3 class="form-section-title">Glosario de Términos</h3>
+                <div class="faq-item">
+                    <strong>NPS:</strong> Net Promoter Score. Mide la recomendación de los clientes. (Bono: S/ 50 si superas el 100%).
+                </div>
+                <div class="faq-item">
+                    <strong>NSR:</strong> Non Store Retail. Ventas fuera de tienda física. (Bono: S/ 50 si superas el 100%).
+                </div>
+                <div class="faq-item">
+                    <strong>B-O (Black & Oro):</strong> Segmento de clientes exclusivos. Representa el 80% del bono Maestrazo.
+                </div>
+                <div class="faq-item">
+                    <strong>VE (Venta Empresa):</strong> Ventas corporativas. Representa el 20% del bono Maestrazo.
+                </div>
+                <div class="faq-item">
+                    <strong>Multiplicador:</strong> Si la frecuencia de compra de clientes B-O supera el 100%, tu bono aumenta (hasta x1.2).
+                </div>
+
+                <h3 class="form-section-title" style="margin-top: 20px;">¿Necesitas repasar?</h3>
+                <button id="btn-reiniciar-tutorial" class="btn-submit" style="background-color: #666;">Volver a ver el Tutorial</button>
+            </div>
+        </div>
+
+        <!-- OVERLAY DEL TUTORIAL -->
+        <div id="tutorial-overlay" class="tutorial-overlay hidden">
+            <div class="tutorial-spotlight" id="tutorial-spotlight"></div>
+            <div class="tutorial-tooltip" id="tutorial-tooltip">
+                <h3 id="tut-title">Título</h3>
+                <p id="tut-text">Texto explicativo.</p>
+                <div class="tut-buttons">
+                    <button id="tut-btn-skip" class="tut-btn-text">Saltar</button>
+                    <button id="tut-btn-next" class="tut-btn-primary">Siguiente</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Snackbar -->
+        <div id="snackbar" class="snackbar">Mensaje</div>
+
+    </div>
+
+    <script src="app.js?v=3"></script>
+</body>
+</html>
