@@ -2,7 +2,7 @@
 
 Guía paso a paso para usar la **Calculadora Maestrazo**. Diseñada para leerse rápido.
 
-[⬅️ Volver al README](./README.md)
+[⬅️ Volver al Inicio de la Wiki](Home)
 
 ---
 
@@ -16,7 +16,7 @@ Guía paso a paso para usar la **Calculadora Maestrazo**. Diseñada para leerse 
 6. [📊 Ver tus KPIs](#-ver-tus-kpis)
 7. [📥 Exportar e importar Excel](#-exportar-e-importar-excel)
 8. [📖 Glosario de Términos](#-glosario-de-términos-y-nomenclaturas)
-9. [🔧 Anexo Técnico](#-anexo-técnico)
+9. [🔧 Anexo Técnico: El Ejemplo Original](#-anexo-técnico-el-ejemplo-original)
 
 ---
 
@@ -29,7 +29,7 @@ Guía paso a paso para usar la **Calculadora Maestrazo**. Diseñada para leerse 
 
 <div align="center">
 
-<img src="./images/formulario.jpg" alt="Formulario de ingreso de datos" width="300">
+<img src="https://jimmynorman.github.io/Calculadora-Maestrazo/images/formulario.jpg" alt="Formulario de ingreso de datos" width="300">
 
 *📝 El formulario de ingreso de datos.*
 
@@ -39,7 +39,7 @@ Verás el desglose con los montos de cada indicador y el total de tu bono.
 
 <div align="center">
 
-<img src="./images/detalle.jpg" alt="Desglose del cálculo con montos" width="300">
+<img src="https://jimmynorman.github.io/Calculadora-Maestrazo/images/detalle.jpg" alt="Desglose del cálculo con montos" width="300">
 
 *💰 El desglose del cálculo con montos.*
 
@@ -56,7 +56,7 @@ Cada cálculo guardado aparece como una tarjeta por mes.
 
 <div align="center">
 
-<img src="./images/historial.jpg" alt="Lista de meses en el historial" width="300">
+<img src="https://jimmynorman.github.io/Calculadora-Maestrazo/images/historial.jpg" alt="Lista de meses en el historial" width="300">
 
 *🗂️ La lista de meses guardados.*
 
@@ -75,7 +75,7 @@ Toca una tarjeta para ver su detalle.
 
 <div align="center">
 
-<img src="./images/editar.jpg" alt="Pantalla para editar un registro" width="300">
+<img src="https://jimmynorman.github.io/Calculadora-Maestrazo/images/editar.jpg" alt="Pantalla para editar un registro" width="300">
 
 *✏️ La pantalla de edición.*
 
@@ -92,7 +92,7 @@ Desliza la tarjeta del mes hacia un lado para eliminarla.
 
 <div align="center">
 
-<img src="./images/swipe.jpg" alt="Deslizar tarjeta para eliminar" width="300">
+<img src="https://jimmynorman.github.io/Calculadora-Maestrazo/images/swipe.jpg" alt="Deslizar tarjeta para eliminar" width="300">
 
 *🗑️ Desliza la tarjeta para eliminar.*
 
@@ -109,7 +109,7 @@ El asistente reúne el **glosario** y los **tutoriales** de la app.
 
 <div align="center">
 
-<img src="./images/asistente.jpg" alt="Glosario y tutoriales" width="300">
+<img src="https://jimmynorman.github.io/Calculadora-Maestrazo/images/asistente.jpg" alt="Glosario y tutoriales" width="300">
 
 *🎓 El asistente con glosario y tutoriales.*
 
@@ -125,7 +125,7 @@ El dashboard muestra tu evolución con gráficos de barras y líneas.
 
 <div align="center">
 
-<img src="./images/kpis.jpg" alt="Gráfico de barras y líneas de KPIs" width="300">
+<img src="https://jimmynorman.github.io/Calculadora-Maestrazo/images/kpis.jpg" alt="Gráfico de barras y líneas de KPIs" width="300">
 
 *📊 El dashboard de KPIs.*
 
@@ -152,8 +152,6 @@ Sirve para ver si estás mejorando mes a mes.
 
 ### 🏢 Términos de Sodimac (El Negocio)
 
-Estos son los indicadores que te da la empresa y que debes ingresar en la calculadora.
-
 | Término | Significado | ¿Cómo te afecta en el bono? |
 | :--- | :--- | :--- |
 | **🧮 Plan Venta Tienda** | La meta general de ventas de toda tu tienda física. | Si la tienda llega al 100%, ganas **S/ 100** fijos. |
@@ -163,8 +161,6 @@ Estos son los indicadores que te da la empresa y que debes ingresar en la calcul
 | **🏢 VE (Venta Empresa)** | Ventas corporativas (a empresas o constructoras). | Es el **20%** de tu bono Maestrazo. *(Tiene tope del 100%)* |
 
 ### 🧮 Términos Matemáticos (Los Cálculos)
-
-Así es como la App transforma tus porcentajes en dinero real.
 
 | Término | Significado | ¿Cómo te afecta en el bono? |
 | :--- | :--- | :--- |
@@ -176,37 +172,111 @@ Así es como la App transforma tus porcentajes en dinero real.
 
 ### 📱 Términos de la Aplicación (La Tecnología)
 
-Estas son las palabras "técnicas" que verás en la pantalla de tu celular.
-
 | Término | Significado | ¿Por qué es útil? |
 | :--- | :--- | :--- |
-| **📱 PWA** | *(Progressive Web App)*. Es una página web que se instala en tu celular como si fuera una app de la Play Store. | No ocupa espacio en tu memoria y se abre a pantalla completa. |
-| **✈️ Modo Offline** | Significa que la App funciona **sin internet**. | Puedes calcular tu bono en el almacén o en el sótano sin señal. |
-| **💾 LocalStorage** | Es la "memoria interna" del navegador de tu celular. | Tus datos se guardan ahí. Son **100% privados**; nadie más los ve. |
-| **📥 Importar / Exportar** | Pasar datos desde/hacia un archivo de Excel (`.xlsx`). | Te sirve para respaldar tu historial en tu PC o llevarlo a otro celular. |
-| **👉 Swipe** | Es la acción de "deslizar" el dedo sobre la pantalla. | En la App, deslizar una tarjeta hacia la izquierda te permite **Eliminar** un registro. |
-| **📊 KPIs** | *(Key Performance Indicators)*. Indicadores clave de rendimiento. | Son los gráficos que te muestran si estás mejorando o empeorando mes a mes. |
+| **📱 PWA** | *(Progressive Web App)*. Es una página web que se instala en tu celular. | No ocupa espacio en tu memoria y se abre a pantalla completa. |
+| **✈️ Modo Offline** | Significa que la App funciona **sin internet**. | Puedes calcular tu bono en el almacén sin señal. |
+| **💾 LocalStorage** | Es la "memoria interna" del navegador de tu celular. | Tus datos se guardan ahí. Son **100% privados**. |
+| **📥 Importar / Exportar** | Pasar datos desde/hacia un archivo de Excel (`.xlsx`). | Te sirve para respaldar tu historial en tu PC. |
+| **👉 Swipe** | Es la acción de "deslizar" el dedo sobre la pantalla. | En la App, deslizar una tarjeta te permite **Eliminar** un registro. |
+| **📊 KPIs** | *(Key Performance Indicators)*. Indicadores clave. | Son los gráficos que te muestran si estás mejorando. |
 
 ---
 
-## 🔧 Anexo Técnico
+## 🔧 Anexo Técnico: El Ejemplo Original
 
-### 📜 Reglas del PDF original
+Esta sección documenta **exactamente** cómo están diseñadas las reglas en el PDF oficial de Sodimac y cómo la App las aplica.
 
-El cálculo sigue las reglas del documento oficial de incentivos Maestrazo.
-Los indicadores considerados son **B-O**, **VE**, **NPS** y **NSR**.
+### 📊 1. Las Tablas Oficiales (Tal cual vienen en el PDF)
 
-### 🎯 Topes del 100%
+**Tabla A: Premio Base (Según Cumplimiento Ponderado)**
+*El Cumplimiento Ponderado se calcula: (50% Venta Individual) + (50% Venta Grupal).*
 
-> [!IMPORTANT]
-> **B-O** y **VE** tienen un **tope máximo del 100%**.
-> Aunque superes ese valor, el cálculo toma 100%.
+| Cumplimiento Ponderado | Premio Base (S/) |
+| :--- | :--- |
+| 90% - 94.9% | S/ 0 |
+| 95% - 99.9% | S/ 100 |
+| 100% - 104.9% | S/ 400 |
+| 105% - 109.9% | S/ 600 |
+| 110% - 114.9% | S/ 750 |
+| **115% - 119.9%** | **S/ 850** |
+| 120% - 124.9% | S/ 950 |
+| 125% - 134.9% | S/ 1,050 |
+| 135% - a más | S/ 1,200 |
 
-### 🚫 Ausencias
+**Tabla B: Factor Multiplicador**
+*Depende del cumplimiento de la Frecuencia de Compra de Clientes Black & Oro (B-O).*
+
+| Cumplimiento Frecuencia B-O | Multiplicador |
+| :--- | :--- |
+| 80% - 99.9% | 1.0 |
+| 100% - 104.9% | 1.1 |
+| 105% - 109.9% | 1.15 |
+| 110% - a más | 1.2 |
+
+---
+
+### 🧮 2. El Problema del PDF (Página 3)
+
+El documento original plantea este escenario:
+*   **Plan de Ventas Tienda:** > 100% (asumimos 101%)
+*   **NPS:** 101%
+*   **NSR:** 101%
+*   **Venta Individual:** 117%
+*   **Venta Grupal (Módulo):** 115%
+*   **Frecuencia de Compra B-O:** 107%
 
 > [!WARNING]
-> Si tus ausencias **superan el límite**, el bono se anula y el resultado es **S/ 0**.
+> **Datos Ocultos y Errores del PDF Original:**
+> 1. **Falta de información:** El problema NO menciona el % de B-O Retail ni el % de VE. Sin embargo, en la resolución aparecen mágicamente: **B-O Retail = 114%** y **VE = 30%**.
+> 2. **Error de Tipeo:** El texto dice que la Frecuencia B-O es 107%. Si miramos la Tabla B, 107% debería dar un multiplicador de **1.15**. Pero en la resolución del PDF usan **1.1** (como si fuera 104%).
 
 ---
 
-[⬅️ Volver al README](./README.md)
+### 💡 3. La Resolución Paso a Paso (En Lenguaje Humano)
+
+Así es como se calcula el bono, explicado para que cualquiera lo entienda:
+
+#### Paso 1: Los Bonos Fijos de la Tienda
+Estos no dependen de tus ventas personales, sino de cómo le fue a la tienda. Como la tienda superó el 100% en todo, se pagan completos:
+*   Plan Tienda: **S/ 100**
+*   NPS: **S/ 50**
+*   NSR: **S/ 50**
+*   **Total Tienda: S/ 200.00**
+
+#### Paso 2: Tu Nota (Cumplimiento Ponderado)
+Aquí promediamos tus ventas personales.
+*   `(117% * 0.50) + (115% * 0.50) =` **116%**
+*   *¿Qué significa esto?* Que tu nota final es 116%.
+
+#### Paso 3: Buscar el Premio Base
+Vamos a la **Tabla A** y buscamos el 116%. Cae en el rango "115% - 119.9%".
+*   **Premio Base: S/ 850.00**
+
+#### Paso 4: Aplicar el Multiplicador
+*   El PDF original dice que usó un multiplicador de **1.1** (por un error de tipeo que ya explicamos). 
+*   Este multiplicador **afecta a TODO el bono Maestrazo** (tanto a B-O como a VE).
+
+#### Paso 5: Calcular B-O (El 80% del bono)
+*   El PDF usó 114%. Pero ojo, la regla dice que **el tope es 100%**. Así que calculamos con 100%.
+*   `S/ 850 * 100% * 80% * 1.1 =` **S/ 748.00**
+
+#### Paso 6: Calcular VE (El 20% del bono)
+*   El PDF usó 30% (el dato oculto).
+*   `S/ 850 * 30% * 20% * 1.1 =` **S/ 56.10**
+
+#### Paso 7: El Total Final
+Sumamos todo:
+*   Tienda (S/ 200) + B-O (S/ 748) + VE (S/ 56.10) = **S/ 1,004.10**
+
+---
+
+### ✅ ¿Cómo lo Resuelve Nuestra App?
+
+1. En nuestra App, el formulario **te obliga a ingresar** los datos de B-O y VE (para que no haya "datos ocultos").
+2. El código matemático está programado con las tablas exactas. Si tú ingresas 107% en Frecuencia B-O, la App usará el multiplicador **1.15** (haciendo el cálculo más justo y exacto que el PDF).
+3. Si ingresas 114% en B-O Retail, la App automáticamente aplicará el **Tope del 100%** para que el cálculo sea legal.
+
+---
+
+[⬅️ Volver al Inicio de la Wiki](Home)

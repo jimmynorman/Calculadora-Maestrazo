@@ -87,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('maestrazo_historial', JSON.stringify(historial));
         renderHistorial(); 
         
-        // Si estamos en la pestaña de KPIs, actualizar el gráfico en vivo
         if (document.getElementById('view-kpis').classList.contains('active')) {
             renderKPIs();
         }
@@ -125,30 +124,57 @@ document.addEventListener('DOMContentLoaded', () => {
             lista.appendChild(wrapper);
         });
 
+        // --- SOLUCIÓN AL FALLO DE CLICK/TAP ---
         document.querySelectorAll('.history-card').forEach(card => {
-            let startX = 0; let currentX = 0; let isDragging = false;
-            function iniciarArrastre(x) { startX = x; isDragging = true; }
-            function moverArrastre(x) { if (isDragging) currentX = x; }
-            function terminarArrastre() {
-                if (!isDragging) return;
-                isDragging = false;
-                let diferencia = startX - currentX;
-                if (diferencia > 50) card.classList.add('swiped');
-                else if (diferencia < -50) card.classList.remove('swiped');
+            let startX = 0;
+            let currentX = 0;
+            let isDragging = false;
+            let startTime = 0;
+
+            function iniciarArrastre(x) {
+                startX = x;
+                currentX = x;
+                isDragging = true;
+                startTime = Date.now();
             }
 
+            function moverArrastre(x) {
+                if (isDragging) currentX = x;
+            }
+
+            function terminarArrastre(x) {
+                if (!isDragging) return;
+                isDragging = false;
+                
+                let diferencia = startX - x;
+                let tiempoTranscurrido = Date.now() - startTime;
+
+                if (diferencia > 50) {
+                    // Deslizó a la izquierda (Abrir botón eliminar)
+                    card.classList.add('swiped');
+                } else if (diferencia < -50) {
+                    // Deslizó a la derecha (Cerrar botón eliminar)
+                    card.classList.remove('swiped');
+                } else if (Math.abs(diferencia) < 10 && tiempoTranscurrido < 300) {
+                    // Fue un TAP (Toque rápido sin movimiento)
+                    if (card.classList.contains('swiped')) {
+                        card.classList.remove('swiped');
+                    } else {
+                        abrirDetalle(parseInt(card.getAttribute('data-id')));
+                    }
+                }
+            }
+
+            // Eventos para Móvil (Touch)
             card.addEventListener('touchstart', e => iniciarArrastre(e.touches[0].clientX), {passive: true});
             card.addEventListener('touchmove', e => moverArrastre(e.touches[0].clientX), {passive: true});
-            card.addEventListener('touchend', terminarArrastre);
+            card.addEventListener('touchend', e => terminarArrastre(e.changedTouches[0].clientX));
+
+            // Eventos para PC (Mouse)
             card.addEventListener('mousedown', e => iniciarArrastre(e.clientX));
             card.addEventListener('mousemove', e => moverArrastre(e.clientX));
-            card.addEventListener('mouseup', terminarArrastre);
+            card.addEventListener('mouseup', e => terminarArrastre(e.clientX));
             card.addEventListener('mouseleave', () => { isDragging = false; });
-
-            card.addEventListener('click', () => {
-                if (card.classList.contains('swiped')) { card.classList.remove('swiped'); return; }
-                abrirDetalle(parseInt(card.getAttribute('data-id')));
-            });
         });
 
         document.querySelectorAll('.btn-delete-swipe').forEach(btn => {
@@ -276,10 +302,8 @@ document.addEventListener('DOMContentLoaded', () => {
         vacio.classList.add('hidden');
         dashboard.classList.remove('hidden');
 
-        // Ordenar cronológicamente (del más antiguo al más nuevo)
         const sorted = [...historial].sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
         
-        // Calcular resúmenes
         const totalAnual = sorted.reduce((sum, item) => sum + item.resultado.totalMes, 0);
         const promedio = totalAnual / sorted.length;
         const mejorMes = sorted.reduce((max, item) => item.resultado.totalMes > max.resultado.totalMes ? item : max, sorted[0]);
@@ -292,7 +316,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const monthName = dateObj.toLocaleDateString('es-ES', { month: 'short' });
         document.getElementById('kpi-mejor').textContent = `S/ ${mejorMes.resultado.totalMes.toFixed(2)} (${monthName})`;
 
-        // Preparar datos para el gráfico
         const labels = sorted.map(item => {
             const [y, m] = item.fecha.split('-');
             const d = new Date(y, m - 1);
@@ -301,7 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const dataBonos = sorted.map(item => item.resultado.totalMes);
         const dataPonderado = sorted.map(item => item.resultado.ponderado);
 
-        // Destruir gráfico anterior si existe para evitar superposiciones
         if (kpiChartInstance) {
             kpiChartInstance.destroy();
         }
@@ -442,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (importados > 0) {
                     localStorage.setItem('maestrazo_historial', JSON.stringify(historial));
                     renderHistorial();
-                    renderKPIs(); // Actualizar gráficos si estamos en esa pestaña
+                    if (document.getElementById('view-kpis').classList.contains('active')) renderKPIs();
                     mostrarSnackbar(`Se importaron ${importados} registros.`);
                 } else {
                     mostrarSnackbar("No se encontraron datos válidos. Revisa el formato.");
