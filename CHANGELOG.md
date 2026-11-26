@@ -5,6 +5,14 @@ Todos los cambios importantes del proyecto.
 [⬅️ Volver al README](./README.md)
 
 ---
+## ✨ [1.1.0] - 2026-11-26
+
+### ✨ Añadido
+
+- 🏷️ El asistente muestra la versión instalada de la app.
+- 🔗 Enlace al repositorio de GitHub dentro del asistente.
+
+---
 ## 🛠️ [1.0.1] - 2026-11-26
 
 ### 🐛 Corregido

@@ -108,3 +108,4 @@ El historial completo se guarda como una lista (*array*) de objetos como este.
 - [ ] 🔄 Subí la versión del cache del Service Worker.
 - [ ] 📝 Actualicé el [CHANGELOG](./CHANGELOG.md).
 - [ ] 📴 Probé la app sin internet.
+- [ ] 🏷️ Actualicé `APP_VERSION` en `app.js` (igual que en el [CHANGELOG](./CHANGELOG.md)).
