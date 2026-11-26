@@ -2,6 +2,9 @@
 import { calcularIncentivos } from './math.js';
 import { initTutorial } from './tutorial.js';
 
+// Versión de la app. Actualizar en cada publicación (junto con el CHANGELOG).
+const APP_VERSION = '1.1.0';
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- 1. Lógica de Pestañas (Tab Bar) ---
     const tabBtns = document.querySelectorAll('.tab-btn');
@@ -503,6 +506,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- 7. INICIALIZAR TUTORIAL Y VISTAS ---
+    const elVersion = document.getElementById('app-version');
+    if (elVersion) elVersion.textContent = `v${APP_VERSION}`;
+
     initTutorial(abrirSheet, cerrarSheets, cambiarPestana, sheetForm);
     renderHistorial();
 
