@@ -261,23 +261,79 @@
         <div id="snackbar" class="snackbar">Mensaje</div>
 
     </div>
-    
-        <!-- Tu script principal -->
+
+            <!-- Tu script principal -->
     <script type="module" src="app.js?v=6"></script>
     
-    <!-- NUEVO: Registro del Service Worker -->
+    <!-- NUEVO: Generador de Favicon con Canvas -->
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(registration => {
-                        console.log('Service Worker registrado con éxito:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('Fallo al registrar el Service Worker:', error);
-                    });
-            });
+        function generateFavicon() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+
+            // 1. Fondo circular (Blanco para contraste)
+            ctx.beginPath();
+            ctx.arc(32, 32, 30, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.strokeStyle = '#0072ce'; // Borde azul
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // 2. Engranaje (Rojo Sodimac) - Simboliza la mecánica y precisión
+            ctx.save();
+            ctx.translate(32, 32);
+            ctx.fillStyle = '#EB0029';
+            ctx.beginPath();
+            for (let i = 0; i < 8; i++) {
+                let angle = (i * Math.PI) / 4;
+                ctx.rotate(angle);
+                ctx.fillRect(14, -4, 6, 8);
+            }
+            ctx.restore();
+            
+            // Círculo central del engranaje
+            ctx.beginPath();
+            ctx.arc(32, 32, 12, 0, 2 * Math.PI);
+            ctx.fillStyle = '#EB0029';
+            ctx.fill();
+
+            // 3. Casco de Construcción (Amarillo) - Símbolo del Maestrazo
+            ctx.fillStyle = '#FFD700'; 
+            ctx.beginPath();
+            ctx.arc(32, 32, 10, Math.PI, 0); // Cúpula del casco
+            ctx.fill();
+            ctx.fillRect(18, 32, 28, 4); // Ala del casco
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // 4. Calculadora (Azul Sodimac) - La herramienta de la app
+            ctx.fillStyle = '#0072ce';
+            ctx.fillRect(26, 20, 12, 14);
+            
+            // Pantalla de la calculadora
+            ctx.fillStyle = '#e0e0e0';
+            ctx.fillRect(28, 22, 8, 4);
+            
+            // Botones
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(28, 28, 2, 2);
+            ctx.fillRect(31, 28, 2, 2);
+            ctx.fillRect(34, 28, 2, 2);
+
+            // Convertir a DataURL y asignarlo al Favicon
+            const link = document.createElement('link');
+            link.rel = 'icon';
+            link.type = 'image/png';
+            link.href = canvas.toDataURL('image/png');
+            document.head.appendChild(link);
         }
+
+        // Ejecutar la función cuando la página cargue
+        window.addEventListener('load', generateFavicon);
     </script>
 </body>
 </html>
