@@ -1,119 +1,212 @@
 # 📖 Manual de Usuario: Calculadora Maestrazo
 
-> [!NOTE]
-> Este manual está diseñado para leerse en **menos de 3 minutos**. Si te pierdes, toca el botón **`?`** en la App.
+Guía paso a paso para usar la **Calculadora Maestrazo**. Diseñada para leerse rápido.
 
-## 🟢 1. Calcular tu Bono del Mes
-<div align="center">
-  <img src="./images/calculadora.png" alt="Formulario de cálculo" width="300" />
-</div>
-
-1. Toca el botón rojo **`+`**.
-2. Llena los datos de tu tienda (Plan Venta, NPS, NSR).
-3. Llena tus datos personales (Venta Individual, Grupal, B-O, VE).
-4. Indica si tuviste ausencias (¡Ojo! Más de 3 faltas anulan el bono).
-5. Toca **"Calcular y Guardar"**.
-
-> [!IMPORTANT]
-> **El Tope del 100%:** Si en B-O o VE pusiste más de 100% (ej. 114%), el sistema lo tomará como 100% para el cálculo, tal como dicen las reglas.
-
-## 📋 2. Revisar el Historial
-<div align="center">
-  <img src="./images/historial.png" alt="Pantalla de Historial" width="300" />
-</div>
-
-*   Ve a la pestaña **Historial** (el ícono de la libreta).
-*   **Ver Detalle:** Toca una tarjeta para ver cómo se calculó exactamente.
-*   **Editar:** Si te equivocaste en un número, toca el detalle y luego "Editar Datos".
-*   **Eliminar:** Desliza la tarjeta hacia la izquierda y toca el botón rojo.
-
-## 📈 3. Ver tus Gráficos (KPIs)
-<div align="center">
-  <img src="./images/kpis.png" alt="Pantalla de KPIs" width="300" />
-</div>
-
-*   Ve a la pestaña **KPIs** (el ícono de la gráfica).
-*   Verás tus totales, promedios y un gráfico que compara tus bonos (barras azules) con tu cumplimiento (línea roja).
-
-## 📤 4. Exportar e Importar (Excel)
-<div align="center">
-  <img src="./images/excel.png" alt="Ejemplo de Excel" width="400" />
-</div>
-
-*   **Exportar:** Guarda un respaldo en tu PC descargando el archivo Excel.
-*   **Importar:** Si tienes un Excel con tus datos, súbelo para que la App calcule todo automáticamente.
+[⬅️ Volver al README](./README.md)
 
 ---
 
-# 📚 Anexo Técnico: Reglas Originales y Ejemplo de Cálculo
+## 📑 Contenido
 
-*(Mantén todo el contenido del anexo que te envié en el mensaje anterior: Tablas, ejemplo, advertencias del PDF, etc.)*
+1. [🧮 Calcular tu bono](#-calcular-tu-bono)
+2. [🗂️ Ver el historial](#️-ver-el-historial)
+3. [✏️ Editar un registro](#️-editar-un-registro)
+4. [🗑️ Eliminar con swipe](#️-eliminar-con-swipe)
+5. [🎓 Usar el asistente](#-usar-el-asistente)
+6. [📊 Ver tus KPIs](#-ver-tus-kpis)
+7. [📥 Exportar e importar Excel](#-exportar-e-importar-excel)
+8. [📖 Glosario de Términos](#-glosario-de-términos-y-nomenclaturas)
+9. [🔧 Anexo Técnico](#-anexo-técnico)
+
+---
+
+## 🧮 Calcular tu bono
+
+1. 📝 Abre la app y ve al formulario (toca el botón rojo **+**).
+2. 🔢 Ingresa tus porcentajes: **B-O**, **VE**, **NPS** y **NSR**.
+3. 📅 Indica tus ausencias del mes.
+4. ✅ Presiona calcular.
+
+<div align="center">
+
+<img src="./images/formulario.jpg" alt="Formulario de ingreso de datos" width="300">
+
+*📝 El formulario de ingreso de datos.*
+
+</div>
+
+Verás el desglose con los montos de cada indicador y el total de tu bono.
+
+<div align="center">
+
+<img src="./images/detalle.jpg" alt="Desglose del cálculo con montos" width="300">
+
+*💰 El desglose del cálculo con montos.*
+
+</div>
+
+> [!TIP]
+> Guarda el cálculo para que aparezca en tu historial.
+
+---
+
+## 🗂️ Ver el historial
+
+Cada cálculo guardado aparece como una tarjeta por mes.
+
+<div align="center">
+
+<img src="./images/historial.jpg" alt="Lista de meses en el historial" width="300">
+
+*🗂️ La lista de meses guardados.*
+
+</div>
+
+Toca una tarjeta para ver su detalle.
+
+---
+
+## ✏️ Editar un registro
+
+1. 👆 Abre el mes que quieres corregir.
+2. ✏️ Toca el botón de **editar**.
+3. 🔢 Cambia los valores.
+4. 💾 Guarda los cambios.
+
+<div align="center">
+
+<img src="./images/editar.jpg" alt="Pantalla para editar un registro" width="300">
+
+*✏️ La pantalla de edición.*
+
+</div>
+
+> [!NOTE]
+> El bono se recalcula solo con los nuevos valores.
+
+---
+
+## 🗑️ Eliminar con swipe
+
+Desliza la tarjeta del mes hacia un lado para eliminarla.
+
+<div align="center">
+
+<img src="./images/swipe.jpg" alt="Deslizar tarjeta para eliminar" width="300">
+
+*🗑️ Desliza la tarjeta para eliminar.*
+
+</div>
 
 > [!WARNING]
-> **Nota para el equipo:** Esta sección documenta las reglas extraídas del PDF oficial de Sodimac. También expone **errores de tipeo y datos faltantes** que el documento original tiene, y cómo esta App los ha resuelto.
-
-## 📊 Tabla 1: Premio Base (Según Cumplimiento Ponderado)
-El cumplimiento ponderado se calcula: `(50% Venta Individual) + (50% Venta Grupal)`.
-
-| Cumplimiento Ponderado | Premio Base (S/) |
-| :--- | :--- |
-| 90% - 94.9% | S/ 0 |
-| 95% - 99.9% | S/ 100 |
-| ... | ... |
-| **115% - 119.9%** | **S/ 850** *(Ejemplo)* |
-
-## 🔄 Tabla 2: Factor Multiplicador
-Depende del cumplimiento de la **Frecuencia de Compra de Clientes Black & Oro (B-O)**.
-
-| Cumplimiento Frecuencia B-O | Multiplicador |
-| :--- | :--- |
-| 80% - 99.9% | 1.0 |
-| 100% - 104.9% | 1.1 |
-| ... | ... |
-
-## 🧮 El Ejemplo de Cálculo (Página 3 del PDF original)
-
-### 📝 Los Datos del Problema (Lo que dice el texto)
-*   Plan de Ventas Tienda: **> 100%** (asumimos 101%)
-*   NPS: **101%**
-*   NSR: **101%**
-*   Venta Individual: **117%**
-*   Venta Grupal (Módulo): **115%**
-*   Frecuencia de Compra B-O: **107%**
-
-> [!CAUTION]
-> **Errores y Datos Ocultos del PDF Original:**
-> 1. **Falta de información:** El problema NO menciona el % de B-O Retail ni el % de VE en el texto principal. Sin embargo, en la resolución mágicamente aparecen: **B-O Retail = 114%** y **VE = 30%**.
-> 2. **Error de Tipeo:** El texto dice que la Frecuencia B-O es 107%. Si vamos a la Tabla 2, 107% debería dar un multiplicador de **1.15**. Pero en la resolución del PDF usan **1.1** (como si fuera 104%). Es un error de tipeo del documento original.
+> Eliminar un registro no se puede deshacer. Si dudas, exporta tus datos a Excel antes.
 
 ---
 
-### 🧮 La Resolución Paso a Paso (Como debía ser)
+## 🎓 Usar el asistente
 
-#### PARTE 1: Incentivos Fijos de Tienda
-*   Plan de Tienda (>100%): **S/ 100**
-*   NPS (101%): **S/ 50**
-*   NSR (101%): **S/ 50**
-*   **Subtotal Tienda: S/ 200.00**
+El asistente reúne el **glosario** y los **tutoriales** de la app.
 
-#### PARTE 2: El Cálculo del Maestrazo
-**Paso A: Cumplimiento Ponderado**
-`(117% * 0.50) + (115% * 0.50) = 58.5% + 57.5% =` **116%**
-*(Con 116%, buscamos en la Tabla 1 y nos da un Premio Base de **S/ 850**).*
+<div align="center">
 
-**Paso B: Aplicar el Multiplicador**
-*   Según el texto, la frecuencia es 107%, lo que debería dar **1.15**.
-*   Pero siguiendo la resolución del PDF (que usó 104%), usaremos **1.1**.
+<img src="./images/asistente.jpg" alt="Glosario y tutoriales" width="300">
 
-**Paso C: Cálculo B-O Retail (80% del premio)**
-*   El PDF usa 114%, pero por la regla del tope, se calcula con 100%.
-*   `S/ 850 * 100% (Tope) * 80% (Peso) * 1.1 (Multiplicador) =` **S/ 748.00**
+*🎓 El asistente con glosario y tutoriales.*
 
-**Paso D: Cálculo VE - Venta Empresa (20% del premio)**
-*   El PDF usa 30% (dato oculto).
-*   `S/ 850 * 30% * 20% (Peso) * 1.1 (Multiplicador) =` **S/ 56.10**
+</div>
 
-*   **Subtotal Maestrazo:** `748.00 + 56.10 =` **S/ 804.10**
+Úsalo cuando no recuerdes qué significa un indicador (B-O, VE, NPS, NSR).
 
-#### PARTE 3: Total Final
-*   Total Tienda + Total Maestrazo = `200.00 + 804.10 =` **S/ 1,004.10**
+---
+
+## 📊 Ver tus KPIs
+
+El dashboard muestra tu evolución con gráficos de barras y líneas.
+
+<div align="center">
+
+<img src="./images/kpis.jpg" alt="Gráfico de barras y líneas de KPIs" width="300">
+
+*📊 El dashboard de KPIs.*
+
+</div>
+
+Sirve para ver si estás mejorando mes a mes.
+
+---
+
+## 📥 Exportar e importar Excel
+
+- 📤 **Exportar:** descarga tu historial en un archivo `.xlsx`.
+- 📥 **Importar:** carga un archivo `.xlsx` para recuperar tus datos.
+
+> [!TIP]
+> Exporta una copia de vez en cuando. Tus datos viven solo en tu dispositivo.
+
+---
+
+## 📖 Glosario de Términos y Nomenclaturas
+
+> [!TIP]
+> **¿Te olvidaste de qué significa algo?** Aquí tienes el diccionario de la App explicado de forma sencilla.
+
+### 🏢 Términos de Sodimac (El Negocio)
+
+Estos son los indicadores que te da la empresa y que debes ingresar en la calculadora.
+
+| Término | Significado | ¿Cómo te afecta en el bono? |
+| :--- | :--- | :--- |
+| **🧮 Plan Venta Tienda** | La meta general de ventas de toda tu tienda física. | Si la tienda llega al 100%, ganas **S/ 100** fijos. |
+| **🌟 NPS** | *(Net Promoter Score)*. Mide qué tanto recomiendan los clientes la tienda. | Si superas el 100%, ganas **S/ 50** fijos. |
+| **🛍️ NSR** | *(Non Store Retail)*. Ventas que se hacen fuera de la tienda física (online, etc.). | Si superas el 100%, ganas **S/ 50** fijos. |
+| **👑 B-O (Black & Oro)** | Clientes exclusivos de alto valor. | Es el **80%** de tu bono Maestrazo. *(Tiene tope del 100%)* |
+| **🏢 VE (Venta Empresa)** | Ventas corporativas (a empresas o constructoras). | Es el **20%** de tu bono Maestrazo. *(Tiene tope del 100%)* |
+
+### 🧮 Términos Matemáticos (Los Cálculos)
+
+Así es como la App transforma tus porcentajes en dinero real.
+
+| Término | Significado | ¿Cómo te afecta en el bono? |
+| :--- | :--- | :--- |
+| **⚖️ Cumplimiento Ponderado** | Es tu nota final. Se calcula sumando el **50%** de tu Venta Individual + el **50%** de tu Venta Grupal. | Define en qué rango de la "Tabla de Premios" caes. |
+| **💰 Premio Base** | Es el monto inicial (en Soles) que te corresponde según tu Cumplimiento Ponderado. | Puede ir desde **S/ 0** hasta **S/ 1,200**. |
+| **🚀 Multiplicador** | Un número (1.0 a 1.2) que **multiplica TODO tu bono** para arriba. | Depende de tu **Frecuencia B-O**. Si es mayor a 100%, ganas hasta un 20% extra. |
+| **🚫 Tope del 100%** | Es un límite matemático. | Si en B-O o VE sacaste 114%, la App lo calculará como si fuera 100%. **No te paga de más.** |
+| **❌ Anulación de Bono** | Es cuando el sistema te pone un Cero (S/ 0) directo. | Ocurre si superas el límite de **ausencias** (3 días normal / 2 días Peak Time). |
+
+### 📱 Términos de la Aplicación (La Tecnología)
+
+Estas son las palabras "técnicas" que verás en la pantalla de tu celular.
+
+| Término | Significado | ¿Por qué es útil? |
+| :--- | :--- | :--- |
+| **📱 PWA** | *(Progressive Web App)*. Es una página web que se instala en tu celular como si fuera una app de la Play Store. | No ocupa espacio en tu memoria y se abre a pantalla completa. |
+| **✈️ Modo Offline** | Significa que la App funciona **sin internet**. | Puedes calcular tu bono en el almacén o en el sótano sin señal. |
+| **💾 LocalStorage** | Es la "memoria interna" del navegador de tu celular. | Tus datos se guardan ahí. Son **100% privados**; nadie más los ve. |
+| **📥 Importar / Exportar** | Pasar datos desde/hacia un archivo de Excel (`.xlsx`). | Te sirve para respaldar tu historial en tu PC o llevarlo a otro celular. |
+| **👉 Swipe** | Es la acción de "deslizar" el dedo sobre la pantalla. | En la App, deslizar una tarjeta hacia la izquierda te permite **Eliminar** un registro. |
+| **📊 KPIs** | *(Key Performance Indicators)*. Indicadores clave de rendimiento. | Son los gráficos que te muestran si estás mejorando o empeorando mes a mes. |
+
+---
+
+## 🔧 Anexo Técnico
+
+### 📜 Reglas del PDF original
+
+El cálculo sigue las reglas del documento oficial de incentivos Maestrazo.
+Los indicadores considerados son **B-O**, **VE**, **NPS** y **NSR**.
+
+### 🎯 Topes del 100%
+
+> [!IMPORTANT]
+> **B-O** y **VE** tienen un **tope máximo del 100%**.
+> Aunque superes ese valor, el cálculo toma 100%.
+
+### 🚫 Ausencias
+
+> [!WARNING]
+> Si tus ausencias **superan el límite**, el bono se anula y el resultado es **S/ 0**.
+
+---
+
+[⬅️ Volver al README](./README.md)
