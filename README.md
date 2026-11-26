@@ -1,4 +1,3 @@
-```markdown
 <div align="center">
 
 # 🧮 Calculadora Maestrazo
@@ -127,4 +126,3 @@ Si te sirvió, regálale una ⭐ al repositorio.
 **¡Muchos éxitos con tus ventas!** 🚀
 
 </div>
-```
