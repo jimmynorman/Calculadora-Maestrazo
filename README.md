@@ -1,62 +1,130 @@
-🧮 Calculadora Maestrazo
-La herramienta definitiva para calcular, proyectar y analizar tus incentivos de venta.
+```markdown
+<div align="center">
 
-https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white
-https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white
-https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black
-https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white
+# 🧮 Calculadora Maestrazo
 
-🚀 ¿Qué es esto?
-Una Aplicación Web Progresiva (PWA) diseñada exclusivamente para los asesores "Maestrazo" de Sodimac. Permite calcular el bono mensual de forma transparente, visualizar el desglose exacto y llevar un historial proyectado de ganancias.
+**Calcula, proyecta y analiza tus incentivos de venta Sodimac. Rápido, offline y sin complicaciones.**
 
-💡 TIP: Diseño "TDAH-Friendly"
-Interfaz libre de distracciones, tutoriales paso a paso, gráficos claros y feedback visual inmediato. ¡No necesitas leer un manual de 50 páginas para usarla!
+<br>
 
-📸 Capturas de Pantalla
-https://./images/calculadora.png
-Vista de la Calculadora y resultados
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)
+![License](https://img.shields.io/badge/Licencia-MIT-green?style=for-the-badge)
 
-https://./images/historial.png
-Historial de meses con opción de editar y eliminar
+<br>
 
-https://./images/kpis.png
-Dashboard de KPIs con proyecciones
+[🌐 **Abrir la App en Producción**](https://jimmynorman.github.io/Calculadora-Maestrazo/)
 
-✨ Características Principales
-Módulo	Descripción	Icono
-Calculadora	Lógica exacta basada en el PDF oficial (B-O, VE, NPS, NSR).	🧮
-Historial	Guarda tus meses. Edita si te equivocaste o desliza para eliminar.	📋
-KPIs y Gráficos	Visualiza tu promedio mensual, tu mejor mes y tu evolución.	📈
-Exportación Excel	Descarga tu historial a .xlsx o impórtalo al celular.	📤
-Modo Offline	Úsala en el almacén sin internet. Los datos son 100% privados.	✈️
-🏗️ Arquitectura del Software
-El proyecto está diseñado con Separación de Responsabilidades (Vanilla JS). No hay frameworks pesados.
+</div>
 
+---
 
+> [!TIP]
+> **TL;DR:** Una PWA para que los asesores Maestrazo de Sodimac calculen sus bonos exactos.
+> Guarda tu historial, mira tus KPIs en gráficos y úsala 100% sin internet.
 
+---
 
+## 📸 Capturas de Pantalla
 
+<div align="center">
 
+<img src="./images/calculadora.png" alt="Pantalla de la calculadora" width="300">
 
+*🧮 La calculadora: ingresa tus porcentajes y mira tu bono al instante.*
 
+<br>
 
+<img src="./images/historial.png" alt="Pantalla del historial" width="300">
 
-📱 Instalación Rápida (Android / PC)
-Abre la app en Chrome: Ir a la Calculadora
+*🗂️ El historial: edita, elimina y revisa tus cálculos anteriores.*
 
-Abre el menú de Chrome (los 3 puntos ⋮).
+<br>
 
-Selecciona "Instalar aplicación" o "Agregar a la pantalla principal".
+<img src="./images/kpis.png" alt="Pantalla del dashboard de KPIs" width="300">
 
-¡Listo! Se abrirá a pantalla completa como una app nativa.
+*📊 El dashboard: sigue la evolución de tus indicadores con gráficos.*
 
-📚 Documentación Adicional
-📖 Manual de Usuario (Wiki) - Guía paso a paso + Anexo técnico.
+</div>
 
-🗺️ Roadmap - ¿Qué sigue en el futuro?
+---
 
-📝 Changelog - Historial de versiones.
+## ✨ Características Principales
 
-🧠 Memoria del Proyecto - Arquitectura técnica para desarrolladores.
+| Módulo | Descripción | Icono |
+|:-------|:------------|:-----:|
+| **Calculadora** | Cálculo exacto de bonos con B-O, VE, NPS y NSR. | 🧮 |
+| **Historial** | Guarda tus cálculos en el dispositivo. Puedes editarlos y eliminarlos. | 🗂️ |
+| **Dashboard de KPIs** | Gráficos de evolución para ver tu progreso mes a mes. | 📊 |
+| **Excel** | Exporta e importa tus datos con archivos `.xlsx`. | 📥 |
+| **Modo Offline** | Funciona sin conexión gracias al Service Worker. | 📴 |
+| **Tutorial** | Onboarding interactivo para aprender en minutos. | 🎓 |
 
-Hecho con ❤️ para el equipo Maestrazo.
+---
+
+## 🚀 Instalación Rápida
+
+1. 🌐 Abre la [app en Chrome](https://jimmynorman.github.io/Calculadora-Maestrazo/) desde tu Android o PC.
+
+2. 📲 Toca el ícono de **Instalar** en la barra de direcciones (PC) o en el menú ⋮ → *Instalar aplicación* (Android).
+
+3. ✅ Confirma la instalación y abre la app desde tu pantalla de inicio.
+
+> [!NOTE]
+> Después de instalarla, la app funciona sin internet.
+
+---
+
+## 🏗️ Arquitectura del Software
+
+El código está dividido en **3 módulos** con responsabilidades claras:
+
+- 🧠 **`math.js`** → Lógica de negocio y fórmulas de bonos.
+- 🎓 **`tutorial.js`** → Onboarding interactivo para nuevos usuarios.
+- 🎮 **`app.js`** → Control del DOM y orquestador principal.
+
+```mermaid
+graph LR
+    A["🎮 app.js<br/>Control del DOM"] -->|"usa"| B["🧠 math.js<br/>Lógica de negocio"]
+    A -->|"inicia"| C["🎓 tutorial.js<br/>Onboarding"]
+    A -->|"renderiza"| D["📊 Chart.js<br/>Gráficos"]
+    A -->|"exporta / importa"| E["📥 SheetJS<br/>Excel"]
+    A -->|"guarda"| F["💾 LocalStorage<br/>Historial"]
+    G["📴 Service Worker<br/>+ Manifest"] -.->|"cachea"| A
+```
+
+> [!TIP]
+> Toda la lógica de cálculo vive en `math.js`. Si cambian las reglas, solo tocas ese archivo.
+
+---
+
+## 📚 Documentación Adicional
+
+- 📖 [**Manual de Usuario**](./MANUAL.md) → Guía paso a paso de la app.
+- 🗺️ [**Roadmap**](./ROADMAP.md) → Qué viene en el futuro.
+- 📝 [**Changelog**](./CHANGELOG.md) → Historial de cambios por versión.
+- 🧠 [**Memoria del Proyecto**](./MEMORY.md) → Decisiones y contexto técnico.
+
+---
+
+## 🧠 Reglas de Negocio (Contexto)
+
+> [!IMPORTANT]
+> 🎯 El cálculo principal tiene un **tope del 100%** para **B-O** y **VE**.
+>
+> 🚫 Si hay **errores de ausencias**, el bono se **anula**.
+
+---
+
+<div align="center">
+
+### 💙 Hecho con cariño para los Maestrazos
+
+Si te sirvió, regálale una ⭐ al repositorio.
+
+**¡Muchos éxitos con tus ventas!** 🚀
+
+</div>
+```
