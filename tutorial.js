@@ -1,4 +1,25 @@
 // tutorial.js
+const CLAVE_TUTORIAL_VISTO = 'maestrazo_tutorial_visto';
+
+// Si el navegador bloquea el almacenamiento, no se muestra el tour automático
+// (sigue disponible desde el botón "?" del asistente).
+function tutorialYaVisto() {
+    try {
+        return !!localStorage.getItem(CLAVE_TUTORIAL_VISTO);
+    } catch (error) {
+        console.error('No se pudo leer el estado del tutorial:', error);
+        return true;
+    }
+}
+
+function marcarTutorialVisto() {
+    try {
+        localStorage.setItem(CLAVE_TUTORIAL_VISTO, 'true');
+    } catch (error) {
+        console.error('No se pudo guardar el estado del tutorial:', error);
+    }
+}
+
 export function initTutorial(abrirSheet, cerrarSheets, cambiarPestana, sheetForm) {
     const tutorialOverlay = document.getElementById('tutorial-overlay');
     const spotlight = document.getElementById('tutorial-spotlight');
@@ -117,7 +138,7 @@ export function initTutorial(abrirSheet, cerrarSheets, cambiarPestana, sheetForm
         tutorialOverlay.classList.add('hidden');
         cerrarSheets();
         if (tourActual === 'principal') {
-            localStorage.setItem('maestrazo_tutorial_visto', 'true');
+            marcarTutorialVisto();
         }
         cambiarPestana('view-calculadora');
         document.querySelector('.content-area').scrollTop = 0;
@@ -139,7 +160,7 @@ export function initTutorial(abrirSheet, cerrarSheets, cambiarPestana, sheetForm
     });
 
     // Auto-iniciar solo el principal la primera vez
-    if (!localStorage.getItem('maestrazo_tutorial_visto')) {
+    if (!tutorialYaVisto()) {
         setTimeout(() => iniciarTour('principal'), 500);
     }
 }

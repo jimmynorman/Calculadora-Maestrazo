@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Función de Snackbar modificada para soportar el botón de actualizar
     let snackbarTimeout;
-    function mostrarSnackbar(mensaje, esActualizacion = false) {
+    function mostrarSnackbar(mensaje, esActualizacion = false, duracion = 0) {
         clearTimeout(snackbarTimeout);
         snackbarText.textContent = mensaje;
         
@@ -81,12 +81,77 @@ document.addEventListener('DOMContentLoaded', () => {
         snackbar.classList.add('show');
         
         // Si es una actualización, no ocultar el mensaje tan rápido
-        const tiempo = esActualizacion ? 15000 : 3000;
+    const tiempo = duracion || (esActualizacion ? 15000 : 3000);
         snackbarTimeout = setTimeout(() => snackbar.classList.remove('show'), tiempo);
     }
 
-    // --- 3. Base de Datos Local (Historial) ---
-    let historial = JSON.parse(localStorage.getItem('maestrazo_historial')) || [];
+        // --- 3. Base de Datos Local (Historial) ---
+    const CLAVE_HISTORIAL = 'maestrazo_historial';
+    const CLAVE_RESPALDO = 'maestrazo_historial_respaldo';
+
+    // Un registro es válido si tiene lo mínimo que la app necesita para
+    // mostrar la lista, los KPIs y la exportación sin fallar.
+    function esRegistroValido(reg) {
+        return !!reg && typeof reg === 'object'
+            && Number.isFinite(reg.id)
+            && typeof reg.fecha === 'string' && /^\d{4}-\d{1,2}$/.test(reg.fecha)
+            && !!reg.datos && typeof reg.datos === 'object'
+            && !!reg.resultado && typeof reg.resultado === 'object'
+            && Number.isFinite(reg.resultado.totalMes)
+            && Number.isFinite(reg.resultado.ponderado);
+    }
+
+    // Guarda una copia del texto original antes de descartarlo (solo se conserva el último respaldo).
+    function respaldarHistorial(texto) {
+        try {
+            localStorage.setItem(CLAVE_RESPALDO, texto);
+        } catch (error) {
+            console.error('No se pudo crear el respaldo del historial:', error);
+        }
+    }
+
+    function cargarHistorial() {
+        let textoOriginal = null;
+        try {
+            textoOriginal = localStorage.getItem(CLAVE_HISTORIAL);
+            if (textoOriginal === null) return { lista: [], aviso: null };
+
+            const datos = JSON.parse(textoOriginal);
+            if (datos === null) return { lista: [], aviso: null };
+            if (!Array.isArray(datos)) throw new Error('El historial guardado no es una lista');
+
+            const validos = datos.filter(esRegistroValido);
+            if (validos.length !== datos.length) {
+                respaldarHistorial(textoOriginal);
+                const n = datos.length - validos.length;
+                return {
+                    lista: validos,
+                    aviso: `Se omitieron ${n} ${n === 1 ? 'registro dañado' : 'registros dañados'}.`
+                };
+            }
+            return { lista: validos, aviso: null };
+        } catch (error) {
+            console.error('No se pudo leer el historial guardado:', error);
+            if (textoOriginal !== null) respaldarHistorial(textoOriginal);
+            return { lista: [], aviso: 'Historial dañado. Se inició vacío.' };
+        }
+    }
+
+    // Escribe el historial y avisa al usuario si el navegador no lo permite.
+    function persistirHistorial() {
+        try {
+            localStorage.setItem(CLAVE_HISTORIAL, JSON.stringify(historial));
+            return true;
+        } catch (error) {
+            console.error('No se pudo guardar el historial:', error);
+            mostrarSnackbar('No se pudo guardar. Exporta a Excel.', false, 6000);
+            return false;
+        }
+    }
+
+    const cargaInicial = cargarHistorial();
+    let historial = cargaInicial.lista;
+    if (cargaInicial.aviso) mostrarSnackbar(cargaInicial.aviso, false, 6000);
 
     function guardarEnHistorial(datos, resultado, idExistente = null) {
         if (idExistente) {
@@ -102,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
             historial.unshift(nuevoRegistro);
             mostrarSnackbar("Cálculo guardado correctamente");
         }
-        localStorage.setItem('maestrazo_historial', JSON.stringify(historial));
+        persistirHistorial();
         renderHistorial(); 
         
         if (document.getElementById('view-kpis').classList.contains('active')) {
@@ -205,9 +270,9 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', () => {
                 const id = parseInt(btn.getAttribute('data-id'));
                 historial = historial.filter(reg => reg.id !== id);
-                localStorage.setItem('maestrazo_historial', JSON.stringify(historial));
+                const guardado = persistirHistorial();
                 renderHistorial();
-                mostrarSnackbar("Registro eliminado");
+                if (guardado) mostrarSnackbar("Registro eliminado");
                 if (document.getElementById('view-kpis').classList.contains('active')) renderKPIs();
             });
         });
@@ -486,10 +551,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (importados > 0) {
-                    localStorage.setItem('maestrazo_historial', JSON.stringify(historial));
+                    const guardado = persistirHistorial();
                     renderHistorial();
                     if (document.getElementById('view-kpis').classList.contains('active')) renderKPIs();
-                    mostrarSnackbar(`Se importaron ${importados} registros.`);
+                    if (guardado) mostrarSnackbar(`Se importaron ${importados} registros.`);
                 } else {
                     mostrarSnackbar("No se encontraron datos válidos. Revisa el formato.");
                 }
