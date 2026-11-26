@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sheetDetalle = document.getElementById('bottom-sheet-detalle');
     const sheetAsistente = document.getElementById('bottom-sheet-asistente');
     const snackbar = document.getElementById('snackbar');
+    const snackbarText = document.getElementById('snackbar-text');
+    const snackbarAction = document.getElementById('snackbar-action');
     
     let idEditando = null; 
     const formTitulo = sheetForm.querySelector('.sheet-header h2');
@@ -61,10 +63,26 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-cerrar-asistente').addEventListener('click', cerrarSheets);
     backdrop.addEventListener('click', cerrarSheets);
 
-    function mostrarSnackbar(mensaje) {
-        snackbar.textContent = mensaje;
+    // Función de Snackbar modificada para soportar el botón de actualizar
+    let snackbarTimeout;
+    function mostrarSnackbar(mensaje, esActualizacion = false) {
+        clearTimeout(snackbarTimeout);
+        snackbarText.textContent = mensaje;
+        
+        if (esActualizacion) {
+            snackbarAction.style.display = 'block';
+            snackbarAction.onclick = () => {
+                window.location.reload(); // Recarga la app con la nueva versión
+            };
+        } else {
+            snackbarAction.style.display = 'none';
+        }
+
         snackbar.classList.add('show');
-        setTimeout(() => snackbar.classList.remove('show'), 3000);
+        
+        // Si es una actualización, no ocultar el mensaje tan rápido
+        const tiempo = esActualizacion ? 15000 : 3000;
+        snackbarTimeout = setTimeout(() => snackbar.classList.remove('show'), tiempo);
     }
 
     // --- 3. Base de Datos Local (Historial) ---
@@ -124,57 +142,63 @@ document.addEventListener('DOMContentLoaded', () => {
             lista.appendChild(wrapper);
         });
 
-        // --- SOLUCIÓN AL FALLO DE CLICK/TAP ---
         document.querySelectorAll('.history-card').forEach(card => {
             let startX = 0;
             let currentX = 0;
             let isDragging = false;
-            let startTime = 0;
+            let hasSwiped = false;
 
-            function iniciarArrastre(x) {
-                startX = x;
-                currentX = x;
+            card.addEventListener('touchstart', e => {
+                startX = e.touches[0].clientX;
+                currentX = startX;
                 isDragging = true;
-                startTime = Date.now();
-            }
+                hasSwiped = false;
+            }, {passive: true});
 
-            function moverArrastre(x) {
-                if (isDragging) currentX = x;
-            }
+            card.addEventListener('touchmove', e => {
+                if (!isDragging) return;
+                currentX = e.touches[0].clientX;
+                if (Math.abs(startX - currentX) > 10) hasSwiped = true;
+            }, {passive: true});
 
-            function terminarArrastre(x) {
+            card.addEventListener('touchend', () => {
                 if (!isDragging) return;
                 isDragging = false;
-                
-                let diferencia = startX - x;
-                let tiempoTranscurrido = Date.now() - startTime;
+                let diff = startX - currentX;
+                if (diff > 50) card.classList.add('swiped');
+                else if (diff < -50) card.classList.remove('swiped');
+            });
 
-                if (diferencia > 50) {
-                    // Deslizó a la izquierda (Abrir botón eliminar)
-                    card.classList.add('swiped');
-                } else if (diferencia < -50) {
-                    // Deslizó a la derecha (Cerrar botón eliminar)
-                    card.classList.remove('swiped');
-                } else if (Math.abs(diferencia) < 10 && tiempoTranscurrido < 300) {
-                    // Fue un TAP (Toque rápido sin movimiento)
-                    if (card.classList.contains('swiped')) {
-                        card.classList.remove('swiped');
-                    } else {
-                        abrirDetalle(parseInt(card.getAttribute('data-id')));
-                    }
-                }
-            }
+            card.addEventListener('mousedown', e => {
+                startX = e.clientX;
+                currentX = startX;
+                isDragging = true;
+                hasSwiped = false;
+            });
 
-            // Eventos para Móvil (Touch)
-            card.addEventListener('touchstart', e => iniciarArrastre(e.touches[0].clientX), {passive: true});
-            card.addEventListener('touchmove', e => moverArrastre(e.touches[0].clientX), {passive: true});
-            card.addEventListener('touchend', e => terminarArrastre(e.changedTouches[0].clientX));
+            card.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                currentX = e.clientX;
+                if (Math.abs(startX - currentX) > 10) hasSwiped = true;
+            });
 
-            // Eventos para PC (Mouse)
-            card.addEventListener('mousedown', e => iniciarArrastre(e.clientX));
-            card.addEventListener('mousemove', e => moverArrastre(e.clientX));
-            card.addEventListener('mouseup', e => terminarArrastre(e.clientX));
+            card.addEventListener('mouseup', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                let diff = startX - currentX;
+                if (diff > 50) card.classList.add('swiped');
+                else if (diff < -50) card.classList.remove('swiped');
+            });
             card.addEventListener('mouseleave', () => { isDragging = false; });
+
+            card.addEventListener('click', () => {
+                if (hasSwiped) { hasSwiped = false; return; }
+                if (card.classList.contains('swiped')) {
+                    card.classList.remove('swiped');
+                } else {
+                    abrirDetalle(parseInt(card.getAttribute('data-id')));
+                }
+            });
         });
 
         document.querySelectorAll('.btn-delete-swipe').forEach(btn => {
@@ -481,4 +505,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 7. INICIALIZAR TUTORIAL Y VISTAS ---
     initTutorial(abrirSheet, cerrarSheets, cambiarPestana, sheetForm);
     renderHistorial();
+
+    // --- 8. DETECCIÓN DE ACTUALIZACIONES DE LA PWA ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').then(reg => {
+                // Detectar si hay una nueva versión instalándose
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        // Si el nuevo worker se instaló y ya hay un controlador (versión antigua)
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            mostrarSnackbar("¡Nueva versión disponible!", true);
+                        }
+                    });
+                });
+            });
+
+            // Si el Service Worker toma el control, recargar la página una vez
+            let refreshing;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (refreshing) return;
+                window.location.reload();
+                refreshing = true;
+            });
+        });
+    }
 });

@@ -466,3 +466,37 @@ html, body {
     white-space: nowrap;
 }
 .snackbar.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+/* ========================================== */
+/* SNACKBAR CON BOTÓN DE ACCIÓN               */
+/* ========================================== */
+.snackbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    pointer-events: none; /* Para que no bloquee clics si no está activo */
+}
+
+.snackbar.show {
+    pointer-events: auto; /* Se activa cuando se muestra */
+}
+
+#snackbar-text {
+    flex: 1;
+}
+
+#snackbar-action {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+#snackbar-action:active {
+    background-color: var(--primary-dark);
+}
