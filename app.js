@@ -1,4 +1,6 @@
 // app.js
+import { calcularIncentivos } from './math.js';
+import { initTutorial } from './tutorial.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- 1. Lógica de Pestañas (Tab Bar) ---
@@ -11,7 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const btn = document.querySelector(`.tab-btn[data-target="${targetId}"]`);
         if (btn) btn.classList.add('active');
         document.getElementById(targetId).classList.add('active');
+        
         if (targetId === 'view-historial') renderHistorial();
+        if (targetId === 'view-kpis') renderKPIs();
     }
 
     tabBtns.forEach(btn => {
@@ -47,13 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
         formTitulo.textContent = "Ingresar Datos del Mes";
         btnSubmitForm.textContent = "Calcular y Guardar";
         document.getElementById('form-calculo').reset();
-        // Reseteamos el scroll interno del formulario
         sheetForm.querySelector('.sheet-body').scrollTop = 0;
         abrirSheet(sheetForm);
     });
 
     document.getElementById('btn-asistente').addEventListener('click', () => abrirSheet(sheetAsistente));
-    
     document.getElementById('btn-cerrar-form').addEventListener('click', cerrarSheets);
     document.getElementById('btn-cerrar-detalle').addEventListener('click', cerrarSheets);
     document.getElementById('btn-cerrar-asistente').addEventListener('click', cerrarSheets);
@@ -65,41 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => snackbar.classList.remove('show'), 3000);
     }
 
-    // --- 3. Motor de Cálculo ---
-    function obtenerPremioBase(ponderado) {
-        if (ponderado >= 135) return 1200; if (ponderado >= 125) return 1050;
-        if (ponderado >= 120) return 950; if (ponderado >= 115) return 850;
-        if (ponderado >= 110) return 750; if (ponderado >= 105) return 600;
-        if (ponderado >= 100) return 400; if (ponderado >= 95) return 100;
-        return 0;
-    }
-    function obtenerMultiplicador(frecuencia) {
-        if (frecuencia >= 110) return 1.2; if (frecuencia >= 105) return 1.15;
-        if (frecuencia >= 100) return 1.1; return 1.0;
-    }
-
-    function calcularIncentivos(datos) {
-        let limiteAusencias = datos.tipoJornada === 'peak' ? 2 : 3;
-        if (datos.ausencias > limiteAusencias) {
-            return { error: `Bono anulado. Superaste el límite de ${limiteAusencias} días.` };
-        }
-
-        let totalTienda = (datos.planTienda >= 100 ? 100 : 0) + (datos.nps >= 100 ? 50 : 0) + (datos.nsr >= 100 ? 50 : 0);
-        let ponderado = (datos.ventaIndividual * 0.5) + (datos.ventaGrupal * 0.5);
-        let premioBase = obtenerPremioBase(ponderado);
-        let multiplicador = obtenerMultiplicador(datos.frecuenciaBO);
-        let bonoBO = premioBase * (Math.min(datos.boRetail, 100) / 100) * 0.8 * multiplicador;
-        let bonoVE = premioBase * (Math.min(datos.ve, 100) / 100) * 0.2 * multiplicador;
-        let totalMaestrazo = bonoBO + bonoVE;
-
-        return {
-            totalTienda, bonoPlanTienda: datos.planTienda >= 100 ? 100 : 0, bonoNPS: datos.nps >= 100 ? 50 : 0, bonoNSR: datos.nsr >= 100 ? 50 : 0,
-            ponderado, premioBase, multiplicador, bonoBO, bonoVE, totalMaestrazo,
-            totalMes: totalTienda + totalMaestrazo
-        };
-    }
-
-    // --- 4. Base de Datos Local (Historial) ---
+    // --- 3. Base de Datos Local (Historial) ---
     let historial = JSON.parse(localStorage.getItem('maestrazo_historial')) || [];
 
     function guardarEnHistorial(datos, resultado, idExistente = null) {
@@ -118,6 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         localStorage.setItem('maestrazo_historial', JSON.stringify(historial));
         renderHistorial(); 
+        
+        // Si estamos en la pestaña de KPIs, actualizar el gráfico en vivo
+        if (document.getElementById('view-kpis').classList.contains('active')) {
+            renderKPIs();
+        }
     }
 
     function renderHistorial() {
@@ -185,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('maestrazo_historial', JSON.stringify(historial));
                 renderHistorial();
                 mostrarSnackbar("Registro eliminado");
+                if (document.getElementById('view-kpis').classList.contains('active')) renderKPIs();
             });
         });
     }
@@ -242,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 200);
     }
 
-    // --- 5. Manejo del Formulario (Nuevo o Edición) ---
+    // --- 4. Manejo del Formulario ---
     document.getElementById('form-calculo').addEventListener('submit', (e) => {
         e.preventDefault();
         const datos = {
@@ -286,121 +260,203 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSubmitForm.textContent = "Calcular y Guardar";
     });
 
-    // ==========================================
-    // 6. SISTEMA DE TUTORIAL (ONBOARDING CORREGIDO)
-    // ==========================================
-    const tutorialOverlay = document.getElementById('tutorial-overlay');
-    const spotlight = document.getElementById('tutorial-spotlight');
-    const tooltip = document.getElementById('tutorial-tooltip');
-    const tutTitle = document.getElementById('tut-title');
-    const tutText = document.getElementById('tut-text');
-    const btnNext = document.getElementById('tut-btn-next');
-    const btnSkip = document.getElementById('tut-btn-skip');
-    const appWrapper = document.querySelector('.app-wrapper');
+    // --- 5. RENDERIZAR KPIs (Gráficos) ---
+    let kpiChartInstance = null;
 
-    const pasosTutorial = [
-        { elementId: 'btn-nuevo-calculo', title: 'Paso 1: Nuevo Cálculo', text: 'Presiona este botón para registrar tus datos del mes y calcular tu bono.' },
-        { elementId: 'mes', title: 'Paso 2: El Mes', text: 'Selecciona el mes y año al que corresponden estos datos.', action: 'openForm' },
-        { elementId: 'tut-tienda', title: 'Paso 3: Tienda', text: 'Aquí van los % de tu tienda. Si superas el 100%, sumas hasta S/ 200 extra.' },
-        { elementId: 'tut-maestrazo', title: 'Paso 4: Maestrazo', text: 'Tus ventas individuales, grupales, B-O (Retail) y VE. Aquí se define tu bono principal.' },
-        { elementId: 'tut-criterios', title: 'Paso 5: Criterios', text: 'Si tienes más de 3 faltas (o 2 en Peak Time) en el mes, el bono se anula.' },
-        { elementId: 'btn-submit-form', title: 'Paso 6: Guardar', text: 'Al terminar, presiona aquí para calcular y guardar el registro en tu historial.' },
-        { elementId: 'tab-bar-nav', title: 'Paso 7: Tu Historial', text: 'Usa la barra inferior para ver tus cálculos anteriores. Puedes editar o eliminar tocando un registro.', action: 'closeForm' }
-    ];
-
-    let pasoActual = 0;
-
-    function iniciarTutorial() {
-        pasoActual = 0;
-        tutorialOverlay.classList.remove('hidden');
-        mostrarPaso();
-    }
-
-    function mostrarPaso() {
-        if (pasoActual >= pasosTutorial.length) { finalizarTutorial(); return; }
-
-        const paso = pasosTutorial[pasoActual];
+    function renderKPIs() {
+        const vacio = document.getElementById('kpis-vacio');
+        const dashboard = document.getElementById('kpis-dashboard');
         
-        if (paso.action === 'openForm') abrirSheet(sheetForm);
-        if (paso.action === 'closeForm') cerrarSheets();
+        if (historial.length === 0) {
+            vacio.classList.remove('hidden');
+            dashboard.classList.add('hidden');
+            return;
+        }
+        
+        vacio.classList.add('hidden');
+        dashboard.classList.remove('hidden');
 
-        // Esperar a que el Bottom Sheet termine su animación de apertura/cierre
-        setTimeout(() => {
-            const target = document.getElementById(paso.elementId);
-            if (!target) return;
+        // Ordenar cronológicamente (del más antiguo al más nuevo)
+        const sorted = [...historial].sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+        
+        // Calcular resúmenes
+        const totalAnual = sorted.reduce((sum, item) => sum + item.resultado.totalMes, 0);
+        const promedio = totalAnual / sorted.length;
+        const mejorMes = sorted.reduce((max, item) => item.resultado.totalMes > max.resultado.totalMes ? item : max, sorted[0]);
+        
+        document.getElementById('kpi-total').textContent = `S/ ${totalAnual.toFixed(2)}`;
+        document.getElementById('kpi-promedio').textContent = `S/ ${promedio.toFixed(2)}`;
+        
+        const [year, month] = mejorMes.fecha.split('-');
+        const dateObj = new Date(year, month - 1);
+        const monthName = dateObj.toLocaleDateString('es-ES', { month: 'short' });
+        document.getElementById('kpi-mejor').textContent = `S/ ${mejorMes.resultado.totalMes.toFixed(2)} (${monthName})`;
 
-            // Si el target está dentro de un panel con scroll, hacemos scroll manual
-            const sheetBody = target.closest('.sheet-body');
-            if (sheetBody) {
-                const targetRect = target.getBoundingClientRect();
-                const sheetRect = sheetBody.getBoundingClientRect();
-                
-                // Si no está visible, calcular cuánto scrollear
-                if (targetRect.top < sheetRect.top || targetRect.bottom > sheetRect.bottom) {
-                    const scrollAmount = target.offsetTop - (sheetBody.clientHeight / 2) + (target.clientHeight / 2);
-                    sheetBody.scrollTo({ top: scrollAmount, behavior: 'smooth' });
+        // Preparar datos para el gráfico
+        const labels = sorted.map(item => {
+            const [y, m] = item.fecha.split('-');
+            const d = new Date(y, m - 1);
+            return d.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
+        });
+        const dataBonos = sorted.map(item => item.resultado.totalMes);
+        const dataPonderado = sorted.map(item => item.resultado.ponderado);
+
+        // Destruir gráfico anterior si existe para evitar superposiciones
+        if (kpiChartInstance) {
+            kpiChartInstance.destroy();
+        }
+
+        const ctx = document.getElementById('chart-kpis').getContext('2d');
+        kpiChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Bono Total (S/)',
+                        data: dataBonos,
+                        backgroundColor: 'rgba(0, 114, 206, 0.7)',
+                        borderColor: 'rgba(0, 114, 206, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Cumplimiento (%)',
+                        data: dataPonderado,
+                        type: 'line',
+                        borderColor: '#e31837',
+                        backgroundColor: '#e31837',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: { display: true, text: 'Bono (S/)' }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: { display: true, text: 'Cumplimiento (%)' },
+                        grid: { drawOnChartArea: false }
+                    }
                 }
             }
-
-            // Esperar a que el scroll termine para dibujar el foco
-            setTimeout(() => {
-                const wrapperRect = appWrapper.getBoundingClientRect();
-                const rect = target.getBoundingClientRect();
-                const padding = 6;
-
-                // Coordenadas relativas al app-wrapper
-                const top = rect.top - wrapperRect.top;
-                const left = rect.left - wrapperRect.left;
-
-                spotlight.style.width = `${rect.width + padding * 2}px`;
-                spotlight.style.height = `${rect.height + padding * 2}px`;
-                spotlight.style.top = `${top - padding}px`;
-                spotlight.style.left = `${left - padding}px`;
-
-                tutTitle.textContent = paso.title;
-                tutText.textContent = paso.text;
-                btnNext.textContent = (pasoActual === pasosTutorial.length - 1) ? 'Finalizar' : 'Siguiente';
-
-                // Posicionar tooltip
-                const tooltipHeight = 140; 
-                let tooltipTop = top + rect.height + 12;
-                if (tooltipTop + tooltipHeight > wrapperRect.height) {
-                    tooltipTop = top - tooltipHeight - 12;
-                }
-                
-                let tooltipLeft = left + (rect.width / 2) - 140; 
-                if (tooltipLeft < 10) tooltipLeft = 10;
-                if (tooltipLeft + 280 > wrapperRect.width - 10) tooltipLeft = wrapperRect.width - 290;
-
-                tooltip.style.top = `${tooltipTop}px`;
-                tooltip.style.left = `${tooltipLeft}px`;
-            }, 400); // 400ms para el scroll
-        }, 350); // 350ms para la animación del sheet
+        });
     }
 
-    btnNext.addEventListener('click', () => { pasoActual++; mostrarPaso(); });
-    btnSkip.addEventListener('click', finalizarTutorial);
+    // --- 6. EXPORTAR E IMPORTAR EXCEL ---
+    const btnExportar = document.getElementById('btn-exportar');
+    const btnImportar = document.getElementById('btn-importar');
+    const fileInput = document.getElementById('file-input');
 
-    function finalizarTutorial() {
-        tutorialOverlay.classList.add('hidden');
-        cerrarSheets();
-        localStorage.setItem('maestrazo_tutorial_visto', 'true');
-        cambiarPestana('view-calculadora');
-        
-        // Forzar reseteo de scrolls por si acaso
-        document.querySelector('.content-area').scrollTop = 0;
-        document.querySelectorAll('.sheet-body').forEach(el => el.scrollTop = 0);
-    }
+    btnExportar.addEventListener('click', () => {
+        if (historial.length === 0) { mostrarSnackbar("No hay datos para exportar."); return; }
 
-    document.getElementById('btn-reiniciar-tutorial').addEventListener('click', () => {
-        cerrarSheets();
-        setTimeout(iniciarTutorial, 300);
+        const datosExcel = historial.map(reg => ({
+            "Mes": reg.datos.mes,
+            "Plan Tienda (%)": reg.datos.planTienda,
+            "NPS (%)": reg.datos.nps,
+            "NSR (%)": reg.datos.nsr,
+            "Venta Individual (%)": reg.datos.ventaIndividual,
+            "Venta Grupal (%)": reg.datos.ventaGrupal,
+            "B-O Retail (%)": reg.datos.boRetail,
+            "VE (%)": reg.datos.ve,
+            "Frecuencia B&O (%)": reg.datos.frecuenciaBO,
+            "Jornada": reg.datos.tipoJornada === 'peak' ? 'Peak Time' : 'Full/Part Time',
+            "Ausencias (Días)": reg.datos.ausencias,
+            "Total Tienda (S/)": reg.resultado.totalTienda,
+            "Total Maestrazo (S/)": reg.resultado.totalMaestrazo,
+            "Total Mes (S/)": reg.resultado.totalMes
+        }));
+
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(datosExcel);
+        const wscols = [{wch: 10}, {wch: 15}, {wch: 10}, {wch: 10}, {wch: 20}, {wch: 15}, {wch: 15}, {wch: 10}, {wch: 18}, {wch: 15}, {wch: 15}, {wch: 18}, {wch: 20}, {wch: 15}];
+        ws['!cols'] = wscols;
+
+        XLSX.utils.book_append_sheet(wb, ws, "Historial Maestrazo");
+        XLSX.writeFile(wb, `Incentivos_Maestrazo_${new Date().toISOString().split('T')[0]}.xlsx`);
+        mostrarSnackbar("Archivo exportado correctamente");
     });
 
-    if (!localStorage.getItem('maestrazo_tutorial_visto')) {
-        setTimeout(iniciarTutorial, 500);
-    }
+    btnImportar.addEventListener('click', () => { fileInput.click(); });
 
-    // Inicializar
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const data = new Uint8Array(event.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                if (jsonData.length === 0) { mostrarSnackbar("El archivo está vacío."); return; }
+
+                let importados = 0;
+                jsonData.forEach(row => {
+                    if (row["Mes"] && row["Plan Tienda (%)"] !== undefined) {
+                        const num = (val) => isNaN(parseFloat(val)) ? 0 : parseFloat(val);
+                        const datos = {
+                            mes: row["Mes"],
+                            planTienda: num(row["Plan Tienda (%)"]),
+                            nps: num(row["NPS (%)"]),
+                            nsr: num(row["NSR (%)"]),
+                            ventaIndividual: num(row["Venta Individual (%)"]),
+                            ventaGrupal: num(row["Venta Grupal (%)"]),
+                            boRetail: num(row["B-O Retail (%)"]),
+                            ve: num(row["VE (%)"]),
+                            frecuenciaBO: num(row["Frecuencia B&O (%)"]),
+                            tipoJornada: row["Jornada"] === 'Peak Time' ? 'peak' : 'normal',
+                            ausencias: num(row["Ausencias (Días)"])
+                        };
+
+                        const resultado = calcularIncentivos(datos);
+                        if (resultado.error) {
+                            resultado.totalTienda = 0; resultado.totalMaestrazo = 0; resultado.totalMes = 0; resultado.ponderado = 0; resultado.premioBase = 0; resultado.multiplicador = 1; resultado.bonoBO = 0; resultado.bonoVE = 0;
+                        }
+
+                        const existeIndex = historial.findIndex(h => h.fecha === datos.mes);
+                        if (existeIndex !== -1) {
+                            historial[existeIndex] = { id: Date.now() + importados, fecha: datos.mes, datos: datos, resultado: resultado };
+                        } else {
+                            historial.push({ id: Date.now() + importados, fecha: datos.mes, datos: datos, resultado: resultado });
+                        }
+                        importados++;
+                    }
+                });
+
+                if (importados > 0) {
+                    localStorage.setItem('maestrazo_historial', JSON.stringify(historial));
+                    renderHistorial();
+                    renderKPIs(); // Actualizar gráficos si estamos en esa pestaña
+                    mostrarSnackbar(`Se importaron ${importados} registros.`);
+                } else {
+                    mostrarSnackbar("No se encontraron datos válidos. Revisa el formato.");
+                }
+            } catch (error) {
+                console.error(error);
+                mostrarSnackbar("Error al leer el archivo. Asegúrate de que sea un Excel válido.");
+            }
+            fileInput.value = '';
+        };
+        reader.readAsArrayBuffer(file);
+    });
+
+    // --- 7. INICIALIZAR TUTORIAL Y VISTAS ---
+    initTutorial(abrirSheet, cerrarSheets, cambiarPestana, sheetForm);
     renderHistorial();
 });
