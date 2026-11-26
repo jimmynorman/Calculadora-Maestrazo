@@ -13,7 +13,15 @@ Todos los cambios importantes del proyecto.
 - 🔗 Enlace al repositorio de GitHub dentro del asistente.
 
 ---
+## 🛠️ [1.0.1] - 2026-11-26
 
+### 🐛 Corregido
+
+- 💾 La app ya no se bloquea si el historial guardado está dañado: se respalda y se inicia vacío.
+- ⚠️ Aviso al usuario cuando no se puede leer o guardar el historial.
+- 🎓 El tutorial ya no falla si el navegador bloquea el almacenamiento.
+
+---
 ## 🚀 [1.0.0] - Lanzamiento inicial
 
 ### ✨ Añadido
