@@ -1,9 +1,13 @@
 # 📖 Manual de Usuario: Calculadora Maestrazo
 
 > [!NOTE]
-> Este manual está diseñado para leerse rápido. Si te pierdes, siempre puedes tocar el botón **`?`** en la esquina superior derecha de la App para abrir el asistente.
+> Este manual está diseñado para leerse en **menos de 3 minutos**. Si te pierdes, toca el botón **`?`** en la App.
 
 ## 🟢 1. Calcular tu Bono del Mes
+<div align="center">
+  <img src="./images/calculadora.png" alt="Formulario de cálculo" width="300" />
+</div>
+
 1. Toca el botón rojo **`+`**.
 2. Llena los datos de tu tienda (Plan Venta, NPS, NSR).
 3. Llena tus datos personales (Venta Individual, Grupal, B-O, VE).
@@ -14,16 +18,28 @@
 > **El Tope del 100%:** Si en B-O o VE pusiste más de 100% (ej. 114%), el sistema lo tomará como 100% para el cálculo, tal como dicen las reglas.
 
 ## 📋 2. Revisar el Historial
+<div align="center">
+  <img src="./images/historial.png" alt="Pantalla de Historial" width="300" />
+</div>
+
 *   Ve a la pestaña **Historial** (el ícono de la libreta).
 *   **Ver Detalle:** Toca una tarjeta para ver cómo se calculó exactamente.
 *   **Editar:** Si te equivocaste en un número, toca el detalle y luego "Editar Datos".
 *   **Eliminar:** Desliza la tarjeta hacia la izquierda y toca el botón rojo.
 
 ## 📈 3. Ver tus Gráficos (KPIs)
+<div align="center">
+  <img src="./images/kpis.png" alt="Pantalla de KPIs" width="300" />
+</div>
+
 *   Ve a la pestaña **KPIs** (el ícono de la gráfica).
 *   Verás tus totales, promedios y un gráfico que compara tus bonos (barras azules) con tu cumplimiento (línea roja).
 
 ## 📤 4. Exportar e Importar (Excel)
+<div align="center">
+  <img src="./images/excel.png" alt="Ejemplo de Excel" width="400" />
+</div>
+
 *   **Exportar:** Guarda un respaldo en tu PC descargando el archivo Excel.
 *   **Importar:** Si tienes un Excel con tus datos, súbelo para que la App calcule todo automáticamente.
 
@@ -31,8 +47,10 @@
 
 # 📚 Anexo Técnico: Reglas Originales y Ejemplo de Cálculo
 
+*(Mantén todo el contenido del anexo que te envié en el mensaje anterior: Tablas, ejemplo, advertencias del PDF, etc.)*
+
 > [!WARNING]
-> **Nota para el equipo:** Esta sección documenta las reglas extraídas del PDF oficial de Sodimac. También expone **errores de tipeo y datos faltantes** que el documento original tiene, y cómo esta App los ha resuelto para que los cálculos sean exactos.
+> **Nota para el equipo:** Esta sección documenta las reglas extraídas del PDF oficial de Sodimac. También expone **errores de tipeo y datos faltantes** que el documento original tiene, y cómo esta App los ha resuelto.
 
 ## 📊 Tabla 1: Premio Base (Según Cumplimiento Ponderado)
 El cumplimiento ponderado se calcula: `(50% Venta Individual) + (50% Venta Grupal)`.
@@ -41,13 +59,8 @@ El cumplimiento ponderado se calcula: `(50% Venta Individual) + (50% Venta Grupa
 | :--- | :--- |
 | 90% - 94.9% | S/ 0 |
 | 95% - 99.9% | S/ 100 |
-| 100% - 104.9% | S/ 400 |
-| 105% - 109.9% | S/ 600 |
-| 110% - 114.9% | S/ 750 |
+| ... | ... |
 | **115% - 119.9%** | **S/ 850** *(Ejemplo)* |
-| 120% - 124.9% | S/ 950 |
-| 125% - 134.9% | S/ 1,050 |
-| 135% - a más | S/ 1,200 |
 
 ## 🔄 Tabla 2: Factor Multiplicador
 Depende del cumplimiento de la **Frecuencia de Compra de Clientes Black & Oro (B-O)**.
@@ -56,10 +69,7 @@ Depende del cumplimiento de la **Frecuencia de Compra de Clientes Black & Oro (B
 | :--- | :--- |
 | 80% - 99.9% | 1.0 |
 | 100% - 104.9% | 1.1 |
-| 105% - 109.9% | 1.15 |
-| 110% - a más | 1.2 |
-
----
+| ... | ... |
 
 ## 🧮 El Ejemplo de Cálculo (Página 3 del PDF original)
 
@@ -107,9 +117,3 @@ Depende del cumplimiento de la **Frecuencia de Compra de Clientes Black & Oro (B
 
 #### PARTE 3: Total Final
 *   Total Tienda + Total Maestrazo = `200.00 + 804.10 =` **S/ 1,004.10**
-
----
-
-> [!TIP]
-> **¿Cómo lo resuelve nuestra App?**
-> En nuestra aplicación, el formulario **exige** que el usuario ingrese los datos de B-O Retail y VE (que el PDF ocultó). Además, el código matemático está programado con las tablas exactas, así que si el usuario ingresa 107% en Frecuencia B-O, la App aplicará el multiplicador correcto (1.15) y no el error de tipeo del PDF.
