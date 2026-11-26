@@ -1,14 +1,34 @@
 # 📝 Changelog
 
-Todos los cambios notables de este proyecto serán documentados aquí.
+Todos los cambios importantes del proyecto.
 
-## [1.0.0] - 2024-05-XX (Lanzamiento Inicial)
-### Añadido
-- **Core:** Motor matemático exacto basado en las políticas de Sodimac.
-- **UI:** Interfaz Mobile-First con Tab Bar, Bottom Sheets y FAB.
-- **PWA:** Configuración de Service Worker y Manifest para uso offline.
-- **Módulos:** Separación de responsabilidades en `math.js`, `tutorial.js` y `app.js`.
-- **Excel:** Funcionalidad de exportación e importación usando SheetJS.
-- **KPIs:** Integración con Chart.js para visualización de datos.
-- **Tutoriales:** Onboarding de 3 pasos con foco de luz (spotlight).
-- **Favicon:** Ícono vectorial SVG personalizado.
+[⬅️ Volver al README](./README.md)
+
+---
+
+## 🚀 [1.0.0] - Lanzamiento inicial
+
+### ✨ Añadido
+
+- 🧮 Calculadora de bonos con B-O, VE, NPS y NSR.
+- 🎯 Tope máximo del 100% para B-O y VE.
+- 🚫 Anulación del bono (S/ 0) cuando las ausencias superan el límite.
+- 🗂️ Historial local guardado en `localStorage`.
+- ✏️ Edición de registros existentes.
+- 🗑️ Eliminación de registros con swipe.
+- 📊 Dashboard de KPIs con gráficos de barras y líneas (Chart.js).
+- 📥 Exportación e importación de archivos Excel (SheetJS).
+- 🎓 Asistente con glosario y tutorial interactivo.
+- 📴 Funcionamiento offline con Service Worker y Manifest.
+- 📲 Instalación como PWA en Android y PC.
+
+### 🏗️ Arquitectura
+
+- 🎮 `app.js` como controlador del DOM.
+- 🧠 `math.js` con la lógica de negocio.
+- 🎓 `tutorial.js` para el onboarding.
+
+---
+
+> [!NOTE]
+> El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y el versionado [SemVer](https://semver.org/lang/es/).

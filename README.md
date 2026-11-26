@@ -26,25 +26,25 @@
 
 ---
 
-## 📸 Capturas de Pantalla
+## 📸 Flujo Visual
 
 <div align="center">
 
-<img src="./images/calculadora.png" alt="Pantalla de la calculadora" width="300">
+<img src="./images/formulario.jpg" alt="Formulario de ingreso de datos" width="300">
 
-*🧮 La calculadora: ingresa tus porcentajes y mira tu bono al instante.*
-
-<br>
-
-<img src="./images/historial.png" alt="Pantalla del historial" width="300">
-
-*🗂️ El historial: edita, elimina y revisa tus cálculos anteriores.*
+*📝 Paso 1: ingresa tus porcentajes en el formulario.*
 
 <br>
 
-<img src="./images/kpis.png" alt="Pantalla del dashboard de KPIs" width="300">
+<img src="./images/detalle.jpg" alt="Desglose del cálculo con montos" width="300">
 
-*📊 El dashboard: sigue la evolución de tus indicadores con gráficos.*
+*💰 Paso 2: mira el desglose de tu bono con montos exactos.*
+
+<br>
+
+<img src="./images/editar.jpg" alt="Pantalla para editar un registro" width="300">
+
+*✏️ Paso 3: corrige cualquier registro cuando lo necesites.*
 
 </div>
 
@@ -55,11 +55,11 @@
 | Módulo | Descripción | Icono |
 |:-------|:------------|:-----:|
 | **Calculadora** | Cálculo exacto de bonos con B-O, VE, NPS y NSR. | 🧮 |
-| **Historial** | Guarda tus cálculos en el dispositivo. Puedes editarlos y eliminarlos. | 🗂️ |
-| **Dashboard de KPIs** | Gráficos de evolución para ver tu progreso mes a mes. | 📊 |
+| **Historial** | Guarda tus meses en el dispositivo. Edita o elimina con un deslizamiento. | 🗂️ |
+| **Dashboard de KPIs** | Gráficos de barras y líneas para ver tu evolución. | 📊 |
 | **Excel** | Exporta e importa tus datos con archivos `.xlsx`. | 📥 |
+| **Asistente** | Glosario y tutoriales dentro de la app. | 🎓 |
 | **Modo Offline** | Funciona sin conexión gracias al Service Worker. | 📴 |
-| **Tutorial** | Onboarding interactivo para aprender en minutos. | 🎓 |
 
 ---
 
@@ -80,18 +80,17 @@
 
 El código está dividido en **3 módulos** con responsabilidades claras:
 
+- 🎮 **`app.js`** → Controlador del DOM y orquestador principal.
 - 🧠 **`math.js`** → Lógica de negocio y fórmulas de bonos.
 - 🎓 **`tutorial.js`** → Onboarding interactivo para nuevos usuarios.
-- 🎮 **`app.js`** → Control del DOM y orquestador principal.
 
 ```mermaid
 graph LR
-    A["🎮 app.js<br/>Control del DOM"] -->|"usa"| B["🧠 math.js<br/>Lógica de negocio"]
-    A -->|"inicia"| C["🎓 tutorial.js<br/>Onboarding"]
-    A -->|"renderiza"| D["📊 Chart.js<br/>Gráficos"]
-    A -->|"exporta / importa"| E["📥 SheetJS<br/>Excel"]
-    A -->|"guarda"| F["💾 LocalStorage<br/>Historial"]
-    G["📴 Service Worker<br/>+ Manifest"] -.->|"cachea"| A
+    A["app.js<br/>Controlador DOM"] -->|"usa"| B["math.js<br/>Logica de negocio"]
+    A -->|"inicia"| C["tutorial.js<br/>Onboarding"]
+    A -->|"renderiza"| D["Chart.js<br/>Graficos"]
+    A -->|"exporta e importa"| E["Excel<br/>SheetJS"]
+    A -->|"guarda"| F["LocalStorage<br/>Historial"]
 ```
 
 > [!TIP]
@@ -108,12 +107,12 @@ graph LR
 
 ---
 
-## 🧠 Reglas de Negocio (Contexto)
+## 🧠 Reglas de Negocio
 
 > [!IMPORTANT]
-> 🎯 El cálculo principal tiene un **tope del 100%** para **B-O** y **VE**.
+> 🎯 El cálculo de **B-O** y **VE** tiene un **tope máximo del 100%**.
 >
-> 🚫 Si hay **errores de ausencias**, el bono se **anula**.
+> 🚫 Si las **ausencias superan el límite**, el bono se anula (**S/ 0**).
 
 ---
 

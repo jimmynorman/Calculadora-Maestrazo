@@ -1,26 +1,38 @@
-# 🗺️ Roadmap del Proyecto
+# 🗺️ Roadmap
 
-Este es el plan de evolución de la Calculadora Maestrazo.
+Lo que ya está hecho y lo que viene.
 
-## 🟢 Versión 1.0 (Actual - Completada)
-- [x] Motor de cálculo (B-O, VE, NPS, NSR, Ponderado).
-- [x] Historial local con edición y eliminación (Swipe).
-- [x] Exportación e importación a Excel.
-- [x] Dashboard de KPIs con gráficos dinámicos.
-- [x] Tutoriales interactivos (Onboarding).
-- [x] PWA (Instalable y offline).
-- [x] Arquitectura modular (`math.js`, `tutorial.js`, `app.js`).
+[⬅️ Volver al README](./README.md)
 
-## 🟡 Versión 1.1 (Mejoras de UI/UX)
-- [ ] Modo Oscuro (Dark Mode) automático.
-- [ ] Animaciones de transición entre pestañas.
-- [ ] Personalización del Favicon / Logo.
+---
 
-## 🟠 Versión 2.0 (Sincronización en la Nube)
-- [ ] Integración con Supabase o Firebase.
-- [ ] Login para múltiples usuarios (Multi-Maestrazo).
-- [ ] Sincronización de historial entre celular y PC sin usar Excel.
+## ✅ Versión 1.0 (Completada)
 
-## 🔴 Visión a futuro
-- [ ] Simulador: "¿Cuánto ganaría si subo mi NPS un 5%?"
-- [ ] Notificaciones Push a fin de mes.
+- [x] 🧮 Cálculo exacto de bonos (B-O, VE, NPS, NSR)
+- [x] 🎯 Tope del 100% para B-O y VE
+- [x] 🚫 Anulación del bono por ausencias (S/ 0)
+- [x] 🗂️ Historial local por mes
+- [x] ✏️ Edición de registros
+- [x] 🗑️ Eliminación con swipe
+- [x] 📊 Dashboard de KPIs con gráficos
+- [x] 📥 Exportar e importar Excel
+- [x] 🎓 Asistente con glosario y tutoriales
+- [x] 📴 Modo offline (PWA)
+
+---
+
+## 🚧 Próximamente
+
+- [ ] 🌙 Modo oscuro
+- [ ] ☁️ Sincronización en la nube
+- [ ] 🔔 Recordatorios de fin de mes
+- [ ] 📤 Compartir resultados como imagen
+- [ ] 🌎 Soporte para otras escalas de incentivos
+
+---
+
+> [!NOTE]
+> Este roadmap puede cambiar según el feedback de los usuarios.
+
+> [!TIP]
+> ¿Tienes una idea? Abre un *issue* en el repositorio.

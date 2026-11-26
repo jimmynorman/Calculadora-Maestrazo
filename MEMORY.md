@@ -1,31 +1,110 @@
-# 🧠 Memoria del Proyecto (Contexto para Desarrolladores)
+# 🧠 Memoria del Proyecto
 
-## 🏗️ Arquitectura del Código
-El proyecto usa **Vanilla JS** con **ES Modules**. No hay frameworks pesados.
+Documento técnico para futuros desarrolladores.
 
-*   `index.html`: Contiene la estructura de las 3 vistas (Calculadora, Historial, KPIs) y los Bottom Sheets.
-*   `styles.css`: Variables CSS en `:root`. Diseño Mobile-First con un contenedor `app-wrapper` que simula un celular en PC.
-*   `math.js`: **(NO TOCAR A LA LIGERA)**. Contiene la función pura `calcularIncentivos(datos)`. Aquí viven las tablas de Premio Base y Multiplicadores.
-*   `tutorial.js`: Contiene el motor del tutorial. Recibe las funciones de UI como parámetros para no acoplarse al `app.js`.
-*   `app.js`: El "pegamento". Maneja el DOM, el estado del `localStorage`, la lógica de Excel y conecta con `math.js` y `tutorial.js`.
+[⬅️ Volver al README](./README.md)
 
-## ⚠️ Reglas de Negocio Críticas (Math.js)
-1.  **Topes:** El cálculo de B-O y VE usa `Math.min(valor, 100)`. Esto significa que si el usuario ingresa 114%, el sistema calcula con 100%.
-2.  **Ausencias:** Si las ausencias superan el límite (3 días normal, 2 días Peak Time), la función retorna un objeto con `{ error: "..." }` y el bono es 0.
-3.  **El Multiplicador:** Afecta a TODO el bono Maestrazo. Si la frecuencia B-O es >= 110%, el multiplicador es 1.2.
-4.  **El Ejemplo del PDF:** El documento original tiene un error tipográfico (dice 107% pero usa 1.1). En la app, el cálculo es exacto a las tablas: si es 107%, el multiplicador es 1.15.
+---
 
-## 🛠️ ¿Cómo actualizar la App?
-1.  Si Sodimac cambia los montos de los bonos, **solo edita `math.js`** (las funciones `obtenerPremioBase` y `obtenerMultiplicador`).
-2.  Si agregas una nueva vista, debes agregarla en el HTML, darle estilo y agregar la lógica de cambio de pestaña en `app.js`.
+## 🏗️ Arquitectura de archivos
 
-## 💾 Base de Datos Local
-Los datos se guardan en `localStorage` bajo la clave `maestrazo_historial` como un string JSON.
-El objeto que se guarda tiene esta estructura:
+| Archivo | Rol | Cuidado |
+|:--------|:----|:-------:|
+| `app.js` | Controla el DOM, eventos y gráficos. | 🟡 |
+| `math.js` | Lógica de negocio y fórmulas. | 🔴 |
+| `tutorial.js` | Onboarding interactivo. | 🟢 |
+| Service Worker | Cache para uso offline. | 🟡 |
+| Manifest | Datos de instalación de la PWA. | 🟢 |
+
+---
+
+## 🔴 Sobre `math.js`
+
+> [!WARNING]
+> **No toques `math.js` a la ligera.**
+> Un cambio mínimo altera el dinero que ve el asesor.
+
+Reglas que debes respetar:
+
+- 🎯 **B-O** y **VE** tienen un tope máximo del **100%**.
+- 🚫 Si las ausencias superan el límite, el bono es **S/ 0**.
+- 🧪 Prueba cada cambio con casos conocidos antes de publicar.
+
+> [!TIP]
+> Mantén esta lógica pura: sin acceso al DOM ni a `localStorage`.
+
+---
+
+## 🎮 Sobre `app.js`
+
+Conecta la interfaz con `math.js`.
+
+Recibe los datos del formulario, llama a las funciones de cálculo y pinta el resultado.
+
+También maneja historial, edición, swipe, Excel y gráficos.
+
+---
+
+## 🎓 Sobre `tutorial.js`
+
+Guía al usuario nuevo por la app.
+
+Es independiente de la lógica de cálculo. Puedes modificarlo con bajo riesgo.
+
+---
+
+## 💾 Base de datos local (`localStorage`)
+
+Los datos viven **solo en el navegador del usuario**.
+
+No hay servidor ni base de datos remota.
+
+> [!IMPORTANT]
+> Si el usuario borra los datos del navegador, pierde su historial.
+> Por eso existe la exportación a Excel.
+
+### 📦 Ejemplo del objeto JSON
+
+> [!NOTE]
+> Este es un ejemplo ilustrativo. Ajusta los nombres de campos y la clave de `localStorage` a los reales de `app.js`.
+
 ```json
 {
-  "id": 171234567890,
-  "fecha": "2024-05",
-  "datos": { ...inputs del usuario },
-  "resultado": { ...cálculos devueltos por math.js }
+  "id": "1700000000000",
+  "mes": "2026-11",
+  "bo": 95,
+  "ve": 100,
+  "nps": 80,
+  "nsr": 90,
+  "ausencias": 0,
+  "bono": 0
 }
+```
+
+El historial completo se guarda como una lista (*array*) de objetos como este.
+
+---
+
+## 📴 Modo offline
+
+- 🔧 El Service Worker guarda los archivos en cache.
+- 🔄 Al cambiar archivos, sube la versión del cache para que los usuarios reciban la actualización.
+
+> [!WARNING]
+> Si no actualizas la versión del cache, los usuarios seguirán viendo la versión vieja.
+
+---
+
+## 📚 Librerías externas
+
+- 📊 **Chart.js** → gráficos de barras y líneas.
+- 📥 **SheetJS** → exportar e importar Excel.
+
+---
+
+## ✅ Checklist antes de publicar
+
+- [ ] 🧪 Probé los cálculos con casos conocidos.
+- [ ] 🔄 Subí la versión del cache del Service Worker.
+- [ ] 📝 Actualicé el [CHANGELOG](./CHANGELOG.md).
+- [ ] 📴 Probé la app sin internet.
