@@ -1,0 +1,22 @@
+{
+  "name": "Calculadora Maestrazo",
+  "short_name": "Maestrazo",
+  "description": "Calculadora de incentivos y bonos para el personal Maestrazo de Sodimac.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f0f2f5",
+  "theme_color": "#0072ce",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2920/2920277.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2920/2920277.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

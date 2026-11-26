@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculadora Maestrazo</title>
     <link rel="stylesheet" href="styles.css?v=6">
-    <meta name="theme-color" content="#007bff">
-    <!-- Librería para Excel y Gráficos -->
+    <meta name="theme-color" content="#0072ce">
+    <!-- NUEVA LÍNEA AQUÍ -->
+    <link rel="manifest" href="manifest.json">
+    
     <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -259,7 +261,23 @@
         <div id="snackbar" class="snackbar">Mensaje</div>
 
     </div>
-
+    
+        <!-- Tu script principal -->
     <script type="module" src="app.js?v=6"></script>
+    
+    <!-- NUEVO: Registro del Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registrado con éxito:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Fallo al registrar el Service Worker:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
